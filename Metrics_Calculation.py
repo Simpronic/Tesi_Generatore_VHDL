@@ -12,6 +12,14 @@ class Excel_creator:
             self.model_output_path = hyps
             self.excel_name = excel_name+".xlsx"
             self.m_m = Metrics_manager()
+            self.excel_to_analyze = None
+
+
+        def load_excel(self,excel_path): #Sincera che l'excel a cui faccio riferimento ha il giusto formato (riporta le colonne che mi aspetto da un excel generato da questo manager)
+            print("Work in progress")
+
+        def getExcelStatistics(self): #Estrapola le statistiche dell'excel a cui facciamo riferimento (numero di EM, media ED e Meteor etc)
+            print("Work in progress")
 
         def createExcel(self):
             df = pd.DataFrame()

@@ -19,7 +19,6 @@ class Metrics_manager:
         self.bleu = evaluate.load('bleu')
         
     def load_hyps(self,hyps):
-        print(len(hyps))
         self.hyps = hyps
 
     def load_refs(self,refs):
