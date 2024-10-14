@@ -10,10 +10,14 @@ COLUMS = {"IN","REFS","HYPS","EM_M","ED_M","METEOR_M","HUMAN_E"}
 class Excel_creator:
 
         def __init__(self,requests,hyps,refs,excel_name):
-            self.req_path = requests
-            self.refs_path = refs
-            self.model_output_path = hyps
-            self.excel_name = excel_name+".xlsx"
+            if(requests != None):   
+                self.req_path = requests
+            if(refs != None):
+                self.refs_path = refs
+            if(hyps != None):
+                self.model_output_path = hyps
+            if(excel_name != None):
+                self.excel_name = excel_name+".xlsx"
             self.m_m = Metrics_manager()
             self.excel_to_analyze = None
 
@@ -27,7 +31,11 @@ class Excel_creator:
                 raise Exception("[ERROR]: wrong excel format")
             
         def getExcelStatistics(self): #Estrapola le statistiche dell'excel a cui facciamo riferimento (numero di EM, media ED e Meteor etc)
-            print("Work in progress")
+            number_of_records = len(self.excel_to_analyze)
+            print(f"Number of records: {number_of_records}")
+            print(f"Meteor statistics, mean: {self.excel_to_analyze["METEOR_M"].mean()}")
+            h_e_number_of_ones = (self.excel_to_analyze["HUMAN_E"] == 1).sum()
+            print(f"Human evaluation statistics: ones: {h_e_number_of_ones} zeros: {number_of_records-h_e_number_of_ones}")
 
         def createExcel(self):
             df = pd.DataFrame()
