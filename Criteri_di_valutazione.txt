@@ -5,6 +5,7 @@ Casi particolari:
 	- Se mi genera entity in più che mi rende  il sistema più complesso le valuto 0
 	- Se sbaglia solo nome ma la semantica è corretta gi assegno 1 
 	- Se aggiunge un parametro in più ma in linea di massima la logica è giusta assegno 1 
+	- Se presenta minimi errori sintattici ma semantica giusta assegno 1 
 
 
 
