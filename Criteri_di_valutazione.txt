@@ -8,15 +8,5 @@ Casi particolari:
 	- Se presenta minimi errori sintattici ma semantica giusta assegno 1 
 
 
-
-Confronto parametri per file analizzati
-
-Legenda
-EM = Exact Match
-WM = Wrong Match
-
-CodeGen(pre)
-EM: 150   WM: 176
-
-CodeGen(post)
-EM: 158   WM: 168
+Per alcune entry molto complesse si è fatto riferimento a commenti di confronto generati da chatGPT per comprendere più a fondo le differenze tra il codice atteso e quello generato.
+In caso in cui le differenze non siano state considerevoli è stato assegnato un 1 all'output generato
