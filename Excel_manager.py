@@ -24,6 +24,15 @@ class Excel_creator:
             self.m_m = Metrics_manager()
             self.excel_to_analyze = None
 
+        def __time_to_ms(self,time):
+            time_obj = datetime.strptime(time, "%H:%M:%S")
+            total_ms = (time_obj.hour * 3600 + time_obj.minute * 60 + time_obj.second) * 1000
+            return total_ms
+        
+        def __max_elab_time_and_rows(self,analisis_df):
+            elab_time_max = analisis_df["Time"].max()
+            rows = analisis_df[analisis_df["Time"] == elab_time_max]["Righe"]
+            return elab_time_max, rows
 
         def setAllParameters(self,requests,hyps,refs,excel_name):
             if(requests != None):   
@@ -39,11 +48,8 @@ class Excel_creator:
         def clearExcel_to_analyze(self):
              self.excel_to_analyze = None
 
-        def rom_fenomenaAnalisis(self):
-            if(self.excel_to_analyze == None):
-                exit()
-            df = pd.read_excel(self.excel_to_analyze)
-            filtro =  df[df["HYPS"].str.contains('ROM|RAM', case=False, na=False)]
+        def rom_phenomenaAnalisis(self):
+            filtro =  self.excel_to_analyze[self.excel_to_analyze["HYPS"].str.contains('ROM|RAM', case=False, na=False)]
             filtro = filtro[~filtro["IN"].str.contains('ROM|RAM', case=False, na=False)]
             print(f"Entry with random ROM block: ")
             print(len(filtro["HYPS"]))
@@ -63,8 +69,15 @@ class Excel_creator:
 
                 print("\n\n")
 
+        def evaluationTimeAnalysis(self,evaluation_file_times):
+            df = pd.read_csv(evaluation_file_times, header=None, names=['Righe', 'Time'], quotechar='"')
+            times = [self.__time_to_ms(time) for time in df["Time"]]
+            df["Time"] = times
+            max_elab_time,rows = self.__max_elab_time_and_rows(df)
+            print(f"Max Time: {max_elab_time} ms for {rows[0]} rows")
+            print(f"AVG time for entry: {df["Time"].mean()} ms")
 
-        def load_excel(self,excel_path): #Sincera che l'excel a cui faccio riferimento ha il giusto formato (riporta le colonne che mi aspetto da un excel generato da questo manager)
+        def loadExcel(self,excel_path): #Sincera che l'excel a cui faccio riferimento ha il giusto formato (riporta le colonne che mi aspetto da un excel generato da questo manager)
             df = pd.read_excel(excel_path,engine='openpyxl')
             all_colums_in_file = all(item in df.columns for item in COLUMS)
             if(all_colums_in_file):
@@ -76,10 +89,13 @@ class Excel_creator:
             number_of_records = len(self.excel_to_analyze)
             print(f"Number of records: {number_of_records}")
             h_e_number_of_ones = (self.excel_to_analyze["HUMAN_E"] == 1).sum()
+            number_one_before = (self.excel_to_analyze["EM_M"] == 1).sum()
+
             print(f"Human evaluation statistics: ones: {h_e_number_of_ones} zeros: {number_of_records-h_e_number_of_ones}")
+            print(f"Human evaluation impact: ones_before: {number_one_before} ones_after: {h_e_number_of_ones} human evaluation impact: {h_e_number_of_ones-number_one_before}")
         
         def getMetricsStatistics(self):
-            print(f"Meteor statistics, mean: {self.excel_to_analyze["METEOR_M"].mean()}")
+            print(f"Meteor statistics, mean: {self.excel_to_analyze["METEOR_M"].mean()} std_dev: {self.excel_to_analyze["METEOR_M"].std()}")
 
         def createExcel(self):
             df = pd.DataFrame()

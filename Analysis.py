@@ -22,10 +22,15 @@ def loadStatisticsExcel():
     else:
         current_excel_analysis = os.path.basename(excel_path)
         try:
-            excel_creator.load_excel(excel_path)
+            excel_creator.loadExcel(excel_path)
         except Exception as e:
             print(e)
 
+def evaluationTimeAnalysis():
+    print("Insert evaluation time file path")
+    evaluation_t_file_path = input()
+    excel_creator.evaluationTimeAnalysis(evaluation_t_file_path)
+    
 def correlationAnalysis():
     excel_creator.correlationAnalysis()
 
@@ -35,15 +40,20 @@ def he_impact():
 def metrics_statistics():
    excel_creator.getMetricsStatistics()
 
+def rom_phenomena():
+    excel_creator.rom_phenomenaAnalisis()
+
 def default():
     exit()
 
 def statisticsMenu():
     print("Which statistics would you like to perform ? \n\n")
     print(f"1. Change excel to analyze actually: {current_excel_analysis}")
-    print("2. Correlation analysis analysis")
+    print("2. Correlation analysis analysis with Human evaluation")
     print("3. Get human evaluation impact")
     print("4. Get metrics statistics")
+    print("5. Get rom fenomena count")
+    print("6. Get evaluation time statistics")
     print("Other. Exit")
     choice = int(input())
     switch_statistics.get(choice,default)()
@@ -53,7 +63,9 @@ switch_statistics = {
     1: loadStatisticsExcel,
     2: correlationAnalysis,
     3: he_impact,
-    4: metrics_statistics
+    4: metrics_statistics,
+    5: rom_phenomena,
+    6: evaluationTimeAnalysis
 }
 
 
