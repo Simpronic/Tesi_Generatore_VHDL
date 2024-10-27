@@ -1,0 +1,31 @@
+STATISTICHE DI VALUTAZIONE 
+
+Tempo medio per entry: 44373 ms (0:44:37 minuti:secondi:millisecondi)
+Tempo massimo per 5 entry: 414042 ms (6:54:42 minuti:secondi:millisecondi) 
+Righe relative al tempo massiimo: 271,272,273,274,275
+Human evaluation impact: ones_before: 146 ones_after: 264 human evaluation impact: 118
+
+ANALISI Di CORRELAZIONE
+
+Correlazione con EM_M
+Spearman Correlation: 0.4364495566365208
+Spearman P-value: 1.3585133864772202e-16
+Kendall Correlation: 0.43644955663652074
+Kendall P-value: 3.597620420560421e-15
+
+
+
+Correlazione con ED_M
+Spearman Correlation: 0.6305263765357484
+Spearman P-value: 1.5497396933622763e-37
+Kendall Correlation: 0.5499585620712917
+Kendall P-value: 6.1066808412991614e-30
+
+
+
+Correlazione con METEOR_M
+Spearman Correlation: 0.6303128924143324
+Spearman P-value: 1.6666007692649052e-37
+Kendall Correlation: 0.5192297675845867
+Kendall P-value: 6.381843258201043e-30
+

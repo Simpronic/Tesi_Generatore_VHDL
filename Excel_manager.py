@@ -2,6 +2,7 @@ import pandas as pd
 from Metrics_manager import *
 from datetime import datetime
 from scipy.stats import spearmanr, kendalltau
+import numpy as np
 import pdb
 
 REQUEST_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Dataset\splitted_files\vhdl-test.in"
@@ -25,14 +26,21 @@ class Excel_creator:
             self.excel_to_analyze = None
 
         def __time_to_ms(self,time):
-            time_obj = datetime.strptime(time, "%H:%M:%S")
-            total_ms = (time_obj.hour * 3600 + time_obj.minute * 60 + time_obj.second) * 1000
-            return total_ms
+            minuti, secondi, millisecondi = map(int, time.split(':'))
+            totale_millisecondi = (minuti * 60 * 1000) + (secondi * 1000) + millisecondi
+            return totale_millisecondi
         
         def __max_elab_time_and_rows(self,analisis_df):
             elab_time_max = analisis_df["Time"].max()
             rows = analisis_df[analisis_df["Time"] == elab_time_max]["Righe"]
             return elab_time_max, rows
+        
+        def __millisecondi_in_tempo(self,millisecondi):
+            minuti = millisecondi // (60 * 1000)
+            millisecondi %= (60 * 1000)
+            secondi = millisecondi // 1000
+            millisecondi %= 1000
+            return f"{minuti:2}:{secondi:02}:{millisecondi:02}" 
 
         def setAllParameters(self,requests,hyps,refs,excel_name):
             if(requests != None):   
@@ -74,8 +82,10 @@ class Excel_creator:
             times = [self.__time_to_ms(time) for time in df["Time"]]
             df["Time"] = times
             max_elab_time,rows = self.__max_elab_time_and_rows(df)
-            print(f"Max Time: {max_elab_time} ms for {rows[0]} rows")
-            print(f"AVG time for entry: {df["Time"].mean()} ms")
+            for row in rows:
+                print(f"Max Time: {max_elab_time} ms ({self.__millisecondi_in_tempo(max_elab_time)}  minuti:secondi:millisecondi) for {row} rows")
+            avg_time = [time/5 for time in df["Time"]]
+            print(f"AVG time for entry: {np.mean(avg_time)} ms ({self.__millisecondi_in_tempo(avg_time)}  minuti:secondi:millisecondi)")
 
         def loadExcel(self,excel_path): #Sincera che l'excel a cui faccio riferimento ha il giusto formato (riporta le colonne che mi aspetto da un excel generato da questo manager)
             df = pd.read_excel(excel_path,engine='openpyxl')
