@@ -43,6 +43,9 @@ def metrics_statistics():
 def rom_phenomena():
     excel_creator.rom_phenomenaAnalisis()
 
+def model_acc():
+    print(f"pre_HE: {excel_creator.model_accuracy_pre_HE()} post HE: {excel_creator.model_accuracy_HE()}")
+
 def default():
     exit()
 
@@ -54,6 +57,7 @@ def statisticsMenu():
     print("4. Get metrics statistics")
     print("5. Get rom fenomena count")
     print("6. Get evaluation time statistics")
+    print("7. Model accuracy pre and post HE")
     print("Other. Exit")
     choice = int(input())
     switch_statistics.get(choice,default)()
@@ -65,7 +69,8 @@ switch_statistics = {
     3: he_impact,
     4: metrics_statistics,
     5: rom_phenomena,
-    6: evaluationTimeAnalysis
+    6: evaluationTimeAnalysis,
+    7: model_acc
 }
 
 

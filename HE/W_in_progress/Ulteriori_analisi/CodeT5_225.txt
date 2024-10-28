@@ -4,6 +4,7 @@ Tempo medio per entry: 44373 ms (0:44:37 minuti:secondi:millisecondi)
 Tempo massimo per 5 entry: 414042 ms (6:54:42 minuti:secondi:millisecondi) 
 Righe relative al tempo massiimo: 271,272,273,274,275
 Human evaluation impact: ones_before: 146 ones_after: 264 human evaluation impact: 118
+Accuracy pre_HE: 0.44785276073619634 post HE: 0.8098159509202454   
 
 ANALISI Di CORRELAZIONE
 

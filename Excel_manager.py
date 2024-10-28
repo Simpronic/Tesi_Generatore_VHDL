@@ -55,7 +55,13 @@ class Excel_creator:
             secondi = millisecondi // 1000
             millisecondi %= 1000
             return f"{minuti:2}:{secondi:2}:{millisecondi:2}" 
-
+        
+        def model_accuracy_HE(self):
+             return (((self.excel_to_analyze["HUMAN_E"] == 1).sum())/len(self.excel_to_analyze["HUMAN_E"]))
+        
+        def model_accuracy_pre_HE(self):
+             return (((self.excel_to_analyze["EM_M"] == 1).sum())/len(self.excel_to_analyze["EM_M"]))
+        
         def setAllParameters(self,requests,hyps,refs,excel_name):
             if(requests != None):   
                 self.req_path = requests
