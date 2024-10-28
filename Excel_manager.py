@@ -2,6 +2,7 @@ import pandas as pd
 from Metrics_manager import *
 from datetime import datetime
 from scipy.stats import spearmanr, kendalltau
+import scipy.stats as st 
 import numpy as np
 import pdb
 
@@ -25,6 +26,19 @@ class Excel_creator:
             self.m_m = Metrics_manager()
             self.excel_to_analyze = None
 
+        def __confidence_interval_t_student(self,data):
+            return st.t.interval(confidence=0.95, df=len(data)-1,loc=np.mean(data),scale=st.sem(data)) 
+            
+        def __confidence_interval_normal(self,data):
+            return st.norm.interval(confidence=0.95,loc=np.mean(data),scale=st.sem(data)) 
+        
+        def __confidence_interval_calculation(self,data):
+            if(len(data) < 30):
+                ub,lb= self.__confidence_interval_t_student(data)
+            else:
+                ub,lb = self.__confidence_interval_normal(data)
+            return f"[{lb},{ub}]"
+            
         def __time_to_ms(self,time):
             minuti, secondi, millisecondi = map(int, time.split(':'))
             totale_millisecondi = (minuti * 60 * 1000) + (secondi * 1000) + millisecondi
@@ -40,7 +54,7 @@ class Excel_creator:
             millisecondi %= (60 * 1000)
             secondi = millisecondi // 1000
             millisecondi %= 1000
-            return f"{minuti:2}:{secondi:02}:{millisecondi:02}" 
+            return f"{minuti:2}:{secondi:2}:{millisecondi:2}" 
 
         def setAllParameters(self,requests,hyps,refs,excel_name):
             if(requests != None):   
@@ -85,7 +99,7 @@ class Excel_creator:
             for row in rows:
                 print(f"Max Time: {max_elab_time} ms ({self.__millisecondi_in_tempo(max_elab_time)}  minuti:secondi:millisecondi) for {row} rows")
             avg_time = [time/5 for time in df["Time"]]
-            print(f"AVG time for entry: {np.mean(avg_time)} ms ({self.__millisecondi_in_tempo(avg_time)}  minuti:secondi:millisecondi)")
+            print(f"AVG time for entry: {np.mean(avg_time)} ms C.I 95%:{self.__confidence_interval_calculation(avg_time)};({self.__millisecondi_in_tempo(int(np.mean(avg_time)))}  minuti:secondi:millisecondi)")
 
         def loadExcel(self,excel_path): #Sincera che l'excel a cui faccio riferimento ha il giusto formato (riporta le colonne che mi aspetto da un excel generato da questo manager)
             df = pd.read_excel(excel_path,engine='openpyxl')
