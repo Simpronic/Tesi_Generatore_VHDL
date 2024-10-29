@@ -8,8 +8,8 @@ import pdb
 
 REQUEST_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Dataset\splitted_files\vhdl-test.in"
 REFS_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Dataset\splitted_files\vhdl-test.out"
-COLUMS = {"IN","REFS","HYPS","EM_M","ED_M","METEOR_M","HUMAN_E"}
-METRICS_NAME = ["EM_M","ED_M","METEOR_M"]
+COLUMS = {"IN","REFS","HYPS","EM_M","ED_M","METEOR_M","LCS_M","HUMAN_E"}
+METRICS_NAME = ["EM_M","ED_M","METEOR_M","LCS_M"]
 
 
 class Evaluation_master:
@@ -204,6 +204,7 @@ class Evaluation_master:
             df['EM_M'] =  self.m_m.calc_EM()
             df['ED_M'] = self.m_m.calc_ed()
             df['METEOR_M'] = self.m_m.calc_meteor()
+            df['LCS_M'] = self.m_m.calc_lcs()
             df['HUMAN_E'] = df['EM_M']
             df.to_excel(self.excel_name,index=False)
         

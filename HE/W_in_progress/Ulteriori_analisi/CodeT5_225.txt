@@ -30,3 +30,50 @@ Spearman P-value: 1.6666007692649052e-37
 Kendall Correlation: 0.5192297675845867
 Kendall P-value: 6.381843258201043e-30
 
+Analizyng LCS_M...
+Spearman Correlation: 0.6309617926740679
+Spearman P-value: 1.3359410668844514e-37
+Kendall Correlation: 0.5503447293138786
+Kendall P-value: 5.58143888337334e-30
+
+ANALISI PER CATEGORIA
+
+library import : 0.75
+entity definition with generic : 0.5
+entity definition without generic : 0.875
+process : 0.5
+after assignment : 1.0
+signal definition : 0.9459459459459459
+enumerative data type : 1.0
+if statement condition : 0.9
+signal assignment : 1.0
+conditional assignment : 0.875
+case statement : 0.875
+increment/decrement of variables/signals : 1.0
+architecture definition : 1.0
+component definition : 1.0
+component instantiation : 0.9
+wait instructions : 1.0
+complex process : 0.9090909090909091
+signal definition for interfaces : 1.0
+constant definition : 1.0
+for generate construct : 0.6666666666666666
+array definition : 1.0
+element array assignment : 1.0
+generic definition : 1.0
+memory indexing : 0.8333333333333334
+selected signal assignment : 1.0
+assertion statement : 0.16666666666666666
+complex component definition : 0.5
+variable definition and assignment : 1.0
+shift operation : 1.0
+concatenate : 0.8235294117647058
+high-level comments : 0.41509433962264153
+
+Max time 414042 for:
+271 : high-level comments
+272 : high-level comments
+273 : high-level comments
+274 : high-level comments
+275 : high-level comments
+

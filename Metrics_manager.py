@@ -8,6 +8,7 @@ import numpy as np
 from crystal_bleu import *
 from rouge import Rouge
 from typing import List, Tuple
+import pylcs
 
 
 class Metrics_manager:
@@ -24,7 +25,14 @@ class Metrics_manager:
     def load_refs(self,refs):
         self.refs = refs
 
-
+    def calc_lcs(self):
+        scores = []
+        for hyp, ref in zip(self.hyps, self.refs):
+            tmp = pylcs.lcs_sequence_length(hyp, ref)
+            res_norm = tmp/max(len(hyp),len(ref))
+            scores.append(str(res_norm))
+            return scores
+    
     def __edit_dist(self,hyp, ref):
         tmp = pylcs.edit_distance(hyp, ref)
         res_norm = 1-(tmp/max(len(hyp), len(ref)))
