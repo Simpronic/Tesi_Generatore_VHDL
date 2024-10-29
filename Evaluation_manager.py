@@ -12,7 +12,7 @@ COLUMS = {"IN","REFS","HYPS","EM_M","ED_M","METEOR_M","HUMAN_E"}
 METRICS_NAME = ["EM_M","ED_M","METEOR_M"]
 
 
-class Excel_creator:
+class Evaluation_master:
 
         def __init__(self,requests,hyps,refs,excel_name):
             if(requests != None):   
@@ -72,7 +72,56 @@ class Excel_creator:
             if(excel_name != None):
                 self.excel_name = excel_name+".xlsx"
             self.excel_to_analyze = None
-            
+
+        def __createCategDict(self,category_legend_path):
+            categ_dict = dict()
+            with open(category_legend_path, "r") as file:
+                for linea in file:
+                    linea = linea.strip()
+                    elem = linea.split(",")
+                    categ_dict[elem[0].strip()] = elem[1].strip()
+            return categ_dict
+        
+        def __getCategDistr(self,category_distr_file_path):
+            df = pd.read_excel(category_distr_file_path)
+            return df["Category"]
+        
+        def __categoryScore(self,categs,cat_distr):
+            categ_score = dict()
+            for categ in categs:
+                score = 0
+                e_numbers = 0
+                for i in range(0,len(cat_distr)):
+                    if(cat_distr[i] == int(categ)):
+                        e_numbers += 1 
+                        score += self.excel_to_analyze["HUMAN_E"][i]
+                score = score/e_numbers
+                categ_score[categ] = score           
+            return categ_score
+
+        
+        def categoryAnalysis(self,category_distr_file,category_legend):
+            cat_dict = self.__createCategDict(category_legend)
+            cat_distr = self.__getCategDistr(category_distr_file)
+            score_dict = self.__categoryScore(cat_dict.keys(),cat_distr)
+            return score_dict,cat_dict
+        
+        def categoryTimeAnalysis(self,category_distr_file,category_legend,tim_file_path):
+            cat_dict = self.__createCategDict(category_legend)
+            cat_distr = self.__getCategDistr(category_distr_file)
+            df = pd.read_csv(tim_file_path, header=None, names=['Righe', 'Time'], quotechar='"')
+            times = [self.__time_to_ms(time) for time in df["Time"]]
+            df["Time"] = times
+            rows,max_elab_time_ms,max_elab_time,avg_time_ms,c_i,avg_time= self.evaluationTimeAnalysis(tim_file_path)
+            row_categ = []
+            for row in rows:
+                lines = row.split(",")
+                for line in lines:
+                    categ_name = cat_dict[str(cat_distr[int(line)-2])]
+                    row_categ.append([line,categ_name])
+            return max_elab_time_ms,row_categ
+
+
         def clearExcel_to_analyze(self):
              self.excel_to_analyze = None
 
@@ -97,16 +146,16 @@ class Excel_creator:
 
                 print("\n\n")
 
+        def __calculateAVGTime(self,time_df):
+            return [time/5 for time in time_df["Time"]]
+        
         def evaluationTimeAnalysis(self,evaluation_file_times):
             df = pd.read_csv(evaluation_file_times, header=None, names=['Righe', 'Time'], quotechar='"')
             times = [self.__time_to_ms(time) for time in df["Time"]]
             df["Time"] = times
             max_elab_time,rows = self.__max_elab_time_and_rows(df)
-            for row in rows:
-                print(f"Max Time: {max_elab_time} ms ({self.__millisecondi_in_tempo(max_elab_time)}  minuti:secondi:millisecondi) for {row} rows")
-            avg_time = [time/5 for time in df["Time"]]
-            print(f"AVG time for entry: {np.mean(avg_time)} ms C.I 95%:{self.__confidence_interval_calculation(avg_time)};({self.__millisecondi_in_tempo(int(np.mean(avg_time)))}  minuti:secondi:millisecondi)")
-
+            return rows,max_elab_time,self.__millisecondi_in_tempo(max_elab_time),self.__calculateAVGTime(df),self.__confidence_interval_calculation(self.__calculateAVGTime(df)),self.__millisecondi_in_tempo(int(np.mean(self.__calculateAVGTime(df))))
+           
         def loadExcel(self,excel_path): #Sincera che l'excel a cui faccio riferimento ha il giusto formato (riporta le colonne che mi aspetto da un excel generato da questo manager)
             df = pd.read_excel(excel_path,engine='openpyxl')
             all_colums_in_file = all(item in df.columns for item in COLUMS)
@@ -160,5 +209,10 @@ class Excel_creator:
         
 
 
-    #C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Results\Open-source-models\Open-source-models\Open-source-models\CodeGen\finetuned\test-2024-07-06-23-49\hyps.txt
-    #AnalisiCodeGen
+#C:\Users\marcd\Desktop\Tesi\Work\GitRepo\Tesi_Generatore_VHDL\HE\W_in_progress\AnalisiCodeT5_225.xlsx
+
+#C:\Users\marcd\Desktop\Tesi\Work\GitRepo\Tesi_Generatore_VHDL\Dati_appoggio_analisi\TestInCateg.xlsx
+
+#C:\Users\marcd\Desktop\Tesi\Work\GitRepo\Tesi_Generatore_VHDL\Dati_appoggio_analisi\categories_legend.txt
+
+#C:\Users\marcd\Desktop\Tesi\Work\GitRepo\Tesi_Generatore_VHDL\HE\W_in_progress\Tempi_di_valutazione\Tempi_di_valutazione_CodeT5_220.csv

@@ -1,16 +1,16 @@
-from Excel_manager import *
+from Evaluation_manager import *
 
-excel_creator = Excel_creator(None,None,None,None)
+evaluation_master = Evaluation_master(None,None,None,None)
 current_excel_analysis = None
 
 def excelCreation():
-    global excel_creator
+    global evaluation_master
     print("Insert model output path")
     model_out_path = input()
     print("Insert excel name")
     excel_name = input()
-    excel_creator.setAllParameters(REQUEST_PATH,model_out_path,REFS_PATH,excel_name)
-    excel_creator.createExcel()
+    evaluation_master.setAllParameters(REQUEST_PATH,model_out_path,REFS_PATH,excel_name)
+    evaluation_master.createExcel()
 
 def loadStatisticsExcel():
     global current_excel_analysis
@@ -18,34 +18,61 @@ def loadStatisticsExcel():
     excel_path = input()
     if(len(excel_path) == 0):
         current_excel_analysis = None
-        excel_creator.clearExcel_to_analyze()
+        evaluation_master.clearExcel_to_analyze()
     else:
         current_excel_analysis = os.path.basename(excel_path)
         try:
-            excel_creator.loadExcel(excel_path)
+            evaluation_master.loadExcel(excel_path)
         except Exception as e:
             print(e)
 
 def evaluationTimeAnalysis():
     print("Insert evaluation time file path")
     evaluation_t_file_path = input()
-    excel_creator.evaluationTimeAnalysis(evaluation_t_file_path)
+    rows,max_elab_time_ms,max_elab_time,avg_time_ms,c_i,avg_time = evaluation_master.evaluationTimeAnalysis(evaluation_t_file_path)
+    for row in rows:
+        print(f"Max Time: {max_elab_time_ms} ms ({max_elab_time}  minuti:secondi:millisecondi) for {row} rows")
+        
+    print(f"AVG time for entry: {avg_time_ms} ms C.I 95%:{c_i};({avg_time}  minuti:secondi:millisecondi)")
+
     
 def correlationAnalysis():
-    excel_creator.correlationAnalysis()
+    evaluation_master.correlationAnalysis()
 
 def he_impact():
-   excel_creator.getHEImpact()
+   evaluation_master.getHEImpact()
 
 def metrics_statistics():
-   excel_creator.getMetricsStatistics()
+   evaluation_master.getMetricsStatistics()
 
 def rom_phenomena():
-    excel_creator.rom_phenomenaAnalisis()
+    evaluation_master.rom_phenomenaAnalisis()
 
 def model_acc():
-    print(f"pre_HE: {excel_creator.model_accuracy_pre_HE()} post HE: {excel_creator.model_accuracy_HE()}")
+    print(f"pre_HE: {evaluation_master.model_accuracy_pre_HE()} post HE: {evaluation_master.model_accuracy_HE()}")
 
+def categ_analysis():
+    print("Insert Test in category distribution file path")
+    categ_distr_path = input()
+    print("Insert Category legend file path")
+    categ_legend_path = input()
+    score_dict,cat_dict = evaluation_master.categoryAnalysis(categ_distr_path,categ_legend_path)    
+    for score in score_dict.keys():
+        print(f"{cat_dict[score]} : {score_dict[score]} ")
+
+def time_categ_analysis():
+    print("Insert Test in category distribution file path")
+    categ_distr_path = input()
+    print("Insert Category legend file path")
+    categ_legend_path = input()
+    print("Insert Time file")
+    time_file_path = input()
+    max_time_ms,row_categ = evaluation_master.categoryTimeAnalysis(categ_distr_path,categ_legend_path,time_file_path)
+    print(f"Max time {max_time_ms} for: ")
+    for row in row_categ:
+        print(f"{row[0]} : {row[1]}")
+
+    
 def default():
     exit()
 
@@ -58,6 +85,8 @@ def statisticsMenu():
     print("5. Get rom fenomena count")
     print("6. Get evaluation time statistics")
     print("7. Model accuracy pre and post HE")
+    print("8. Category Analysis")
+    print("9. Time analysis for category")
     print("Other. Exit")
     choice = int(input())
     switch_statistics.get(choice,default)()
@@ -70,7 +99,9 @@ switch_statistics = {
     4: metrics_statistics,
     5: rom_phenomena,
     6: evaluationTimeAnalysis,
-    7: model_acc
+    7: model_acc,
+    8: categ_analysis,
+    9: time_categ_analysis
 }
 
 
