@@ -13,8 +13,17 @@ METRICS_NAME = ["EM_M","ED_M","METEOR_M","LCS_M"]
 
 
 class Evaluation_master:
-
+        """! The Evaluation_master class.
+        Defines operations that you can do for Analysis purposes.
+        """
         def __init__(self,requests,hyps,refs,excel_name):
+            """! The Evaluation_master base class initializer.
+                @param requests: file path with input model request.
+                @param hyps: file path with answers of the model.
+                @param refs: file path with correct answers.
+                @param excel_name: excel file name.
+                @return  None
+            """
             if(requests != None):   
                 self.req_path = requests
             if(refs != None):
@@ -27,12 +36,25 @@ class Evaluation_master:
             self.excel_to_analyze = None
 
         def __confidence_interval_t_student(self,data):
+
+            """! Calculates the confidence interval for data series in relation with t-student distribution.
+                @param data: data series.
+                @return  confidence_interval
+            """
             return st.t.interval(confidence=0.95, df=len(data)-1,loc=np.mean(data),scale=st.sem(data)) 
             
         def __confidence_interval_normal(self,data):
+            """! Calculates the confidence interval for data series in relation with normal distribution.
+                @param data: data series.
+                @return  confidence_interval
+            """
             return st.norm.interval(confidence=0.95,loc=np.mean(data),scale=st.sem(data)) 
         
         def __confidence_interval_calculation(self,data):
+            """! Calculates the confidence interval for data series by using t-student or normal based on the samples.
+                @param data: data series.
+                @return  [lower_bound,upper_bound]
+            """
             if(len(data) < 30):
                 ub,lb= self.__confidence_interval_t_student(data)
             else:
@@ -40,16 +62,28 @@ class Evaluation_master:
             return f"[{lb},{ub}]"
             
         def __time_to_ms(self,time):
+            """! Converts a time in minutes:seconds:milliseconds in milliseconds only
+                @param time: time to convert.
+                @return milliseconds
+            """
             minuti, secondi, millisecondi = map(int, time.split(':'))
             totale_millisecondi = (minuti * 60 * 1000) + (secondi * 1000) + millisecondi
             return totale_millisecondi
         
         def __max_elab_time_and_rows(self,analisis_df):
+            """! Calculates the max evaluation time
+                @param analisis_df: the dataframe with times recorded during HE.
+                @return elab_time_max,rows
+            """
             elab_time_max = analisis_df["Time"].max()
             rows = analisis_df[analisis_df["Time"] == elab_time_max]["Righe"]
             return elab_time_max, rows
         
         def __millisecondi_in_tempo(self,millisecondi):
+            """! Converts a time in milliseconds in minutes:seconds:milliseconds 
+                @param milliseconds: time to convert.
+                @return f"{minuti:2}:{secondi:2}:{millisecondi:2}"
+            """
             minuti = millisecondi // (60 * 1000)
             millisecondi %= (60 * 1000)
             secondi = millisecondi // 1000
@@ -57,12 +91,29 @@ class Evaluation_master:
             return f"{minuti:2}:{secondi:2}:{millisecondi:2}" 
         
         def model_accuracy_HE(self):
-             return (((self.excel_to_analyze["HUMAN_E"] == 1).sum())/len(self.excel_to_analyze["HUMAN_E"]))
+            """! Calculates the model accuracy post-HE by doing number_of_ones/total_number_of_records
+                @note You need to load the excel to analyze first
+                @param None
+                @return accuracy
+            """
+            return (((self.excel_to_analyze["HUMAN_E"] == 1).sum())/len(self.excel_to_analyze["HUMAN_E"]))
         
         def model_accuracy_pre_HE(self):
-             return (((self.excel_to_analyze["EM_M"] == 1).sum())/len(self.excel_to_analyze["EM_M"]))
+            """! Calculates the model accuracy pre-HE by doing number_of_ones/total_number_of_records
+                @note You need to load the excel to analyze first
+                @param None
+                @return accuracy
+            """
+            return (((self.excel_to_analyze["EM_M"] == 1).sum())/len(self.excel_to_analyze["EM_M"]))
         
         def setAllParameters(self,requests,hyps,refs,excel_name):
+            """! Let you set the parameters after the initialization
+                @param requests
+                @param hyps
+                @param refs
+                @param excel_name
+                @return None
+            """
             if(requests != None):   
                 self.req_path = requests
             if(refs != None):
@@ -74,6 +125,10 @@ class Evaluation_master:
             self.excel_to_analyze = None
 
         def __createCategDict(self,category_legend_path):
+            """! Create a dictionary for identify the category using a number 
+                @param category_legend_path: the path of the legend file
+                @return categ_dict
+            """
             categ_dict = dict()
             with open(category_legend_path, "r") as file:
                 for linea in file:
@@ -83,10 +138,20 @@ class Evaluation_master:
             return categ_dict
         
         def __getCategDistr(self,category_distr_file_path):
+            """! Create a vector for category distribution
+                @param category_distr_file_path: the path of the distribution of Test In file 
+                @return df["Category"]
+            """
             df = pd.read_excel(category_distr_file_path)
             return df["Category"]
         
         def __categoryScore(self,categs,cat_distr):
+            """! Calculate the score for each category 
+                @note You need to load the excel to analyze first
+                @param categs: dictionary of caategory 
+                @param cat_distr: category distribution file
+                @return categ_score: dictionary of scores
+            """
             categ_score = dict()
             for categ in categs:
                 score = 0
@@ -101,12 +166,25 @@ class Evaluation_master:
 
         
         def categoryAnalysis(self,category_distr_file,category_legend):
+            """! Driver for category analysis 
+                @note You need to load the excel to analyze first
+                @param category_distr_file
+                @param category_legend
+                @return score_dict,cat_dict
+            """
             cat_dict = self.__createCategDict(category_legend)
             cat_distr = self.__getCategDistr(category_distr_file)
             score_dict = self.__categoryScore(cat_dict.keys(),cat_distr)
             return score_dict,cat_dict
         
         def categoryTimeAnalysis(self,category_distr_file,category_legend,tim_file_path):
+            """! Driver for category Time analysis 
+                @note You need to load the excel to analyze first
+                @param category_distr_file
+                @param category_legend
+                @param tim_file_path
+                @return max_elab_time_ms,row_categ : maximum elaboration time and a dictionary with the correspondence
+            """
             cat_dict = self.__createCategDict(category_legend)
             cat_distr = self.__getCategDistr(category_distr_file)
             df = pd.read_csv(tim_file_path, header=None, names=['Righe', 'Time'], quotechar='"')
@@ -123,15 +201,29 @@ class Evaluation_master:
 
 
         def clearExcel_to_analyze(self):
-             self.excel_to_analyze = None
+            """! Clears the excel 
+                @param None
+                @return none
+            """
+            self.excel_to_analyze = None
 
         def rom_phenomenaAnalisis(self):
+            """! Let you analyze the random occurrence of ROM Blocks
+                @note You need to load the excel to analyze first
+                @param None
+                @return None
+            """
             filtro =  self.excel_to_analyze[self.excel_to_analyze["HYPS"].str.contains('ROM|RAM', case=False, na=False)]
             filtro = filtro[~filtro["IN"].str.contains('ROM|RAM', case=False, na=False)]
             print(f"Entry with random ROM block: ")
             print(len(filtro["HYPS"]))
 
         def correlationAnalysis(self): #Assumo che il df sia stato caricato
+            """! Makes the correlation analysis with all the metrics with Kendall and Spearman
+                @note You need to load the excel to analyze first
+                @param None
+                @return None
+            """
             he_m = self.excel_to_analyze["HUMAN_E"]
             for metric in METRICS_NAME:
                 print(f"Analizyng {metric}...")
@@ -147,9 +239,17 @@ class Evaluation_master:
                 print("\n\n")
 
         def __calculateAVGTime(self,time_df):
+            """! Calculate th average time in a time series
+                @param time_df
+                @return time_avg: array of averages of group of 5 row 
+            """
             return [time/5 for time in time_df["Time"]]
         
         def evaluationTimeAnalysis(self,evaluation_file_times):
+            """! Performs the evaluation time analysis 
+                @param evaluation_file_times
+                @return rows,max_elab_time,max_elab_time_ms,avg_time,c_i,avg_time_ms
+            """
             df = pd.read_csv(evaluation_file_times, header=None, names=['Righe', 'Time'], quotechar='"')
             times = [self.__time_to_ms(time) for time in df["Time"]]
             df["Time"] = times
@@ -157,6 +257,11 @@ class Evaluation_master:
             return rows,max_elab_time,self.__millisecondi_in_tempo(max_elab_time),self.__calculateAVGTime(df),self.__confidence_interval_calculation(self.__calculateAVGTime(df)),self.__millisecondi_in_tempo(int(np.mean(self.__calculateAVGTime(df))))
            
         def loadExcel(self,excel_path): #Sincera che l'excel a cui faccio riferimento ha il giusto formato (riporta le colonne che mi aspetto da un excel generato da questo manager)
+            """! Loads the excel for analysis
+                @note can return an eexception if the format is wrong
+                @param excel_path
+                @return None
+            """
             df = pd.read_excel(excel_path,engine='openpyxl')
             all_colums_in_file = all(item in df.columns for item in COLUMS)
             if(all_colums_in_file):

@@ -1,7 +1,29 @@
+
+"""! @brief Defines the analysis operation that you can performa for this project."""
+##
+# @file Analysis.py
+#
+# @brief Defines the analysis operation that you can performa for this project.
+#
+# @section analysis.py Description
+# Defines the analysis that you can do with the framework.
+# - Create excel for analysis: help you create an excel for human evaluation analysis
+# - Get Excel Statistics: Perform analysis on the outputs, in the documentation you can find functions for analysis
+#
+# @section note_analysis Notes
+# - Comments are Doxygen compatible.
+#
+#
+# @section author_sensors Author(s)
+# - Created by Marco Di Fiandra on 29/10/2024.
+# - Modified by Marco Di Fiandra on 29/10/2024.
+
+
 from Evaluation_manager import *
 
 evaluation_master = Evaluation_master(None,None,None,None)
 current_excel_analysis = None
+
 
 def excelCreation():
     global evaluation_master
