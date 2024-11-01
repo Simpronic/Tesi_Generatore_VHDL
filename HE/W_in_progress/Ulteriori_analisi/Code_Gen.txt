@@ -75,3 +75,7 @@ Max time 632041 for:
 238 : high-level comments
 239 : high-level comments
 240 : high-level comments
+
+EVENTUALI PROBLEMI
+
+Codice iin più ROM random nelle predizioni
