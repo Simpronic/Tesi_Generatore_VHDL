@@ -68,7 +68,8 @@ def metrics_statistics():
    evaluation_master.getMetricsStatistics()
 
 def rom_phenomena():
-    evaluation_master.rom_phenomenaAnalisis()
+    print("In deletion...")
+    #evaluation_master.rom_phenomenaAnalisis()
 
 def model_acc():
     print(f"pre_HE: {evaluation_master.model_accuracy_pre_HE()} post HE: {evaluation_master.model_accuracy_HE()}")

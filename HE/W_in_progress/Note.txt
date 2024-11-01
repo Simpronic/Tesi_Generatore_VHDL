@@ -1,0 +1,3 @@
+Peer l'integrazione di crystalBleu è stato modificato il dile cristalbleu.py poichè prevedeva delle istruzioni vecchie.
+
+E' stata cancellato __normalize dai parametri passati a Fraction 

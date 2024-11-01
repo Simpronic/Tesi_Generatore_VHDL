@@ -36,6 +36,12 @@ Spearman P-value: 1.3359410668844514e-37
 Kendall Correlation: 0.5503447293138786
 Kendall P-value: 5.58143888337334e-30
 
+Analizyng CRYSTALB_M...
+Spearman Correlation: 0.6159117832995042
+Spearman P-value: 1.977603257087343e-35
+Kendall Correlation: 0.5480640554580809
+Kendall P-value: 1.2061543379188338e-28
+
 ANALISI PER CATEGORIA
 
 library import : 0.75

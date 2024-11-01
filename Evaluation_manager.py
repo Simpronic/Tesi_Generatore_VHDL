@@ -8,8 +8,8 @@ import pdb
 
 REQUEST_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Dataset\splitted_files\vhdl-test.in"
 REFS_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Dataset\splitted_files\vhdl-test.out"
-COLUMS = {"IN","REFS","HYPS","EM_M","ED_M","METEOR_M","LCS_M","HUMAN_E"}
-METRICS_NAME = ["EM_M","ED_M","METEOR_M","LCS_M"]
+COLUMS = {"IN","REFS","HYPS","EM_M","ED_M","METEOR_M","LCS_M","CRYSTALB_M","HUMAN_E"}
+METRICS_NAME = ["EM_M","ED_M","METEOR_M","LCS_M","CRYSTALB_M"]
 
 
 class Evaluation_master:
@@ -270,6 +270,11 @@ class Evaluation_master:
                 raise Exception("[ERROR]: wrong excel format")
             
         def getHEImpact(self): #Estrapola le statistiche dell'excel a cui facciamo riferimento (numero di EM, media ED e Meteor etc)
+            """! Prints the HE impact on the LLM output file
+                @note You need to load the excel to analyze first
+                @param None
+                @return None
+            """
             number_of_records = len(self.excel_to_analyze)
             print(f"Number of records: {number_of_records}")
             h_e_number_of_ones = (self.excel_to_analyze["HUMAN_E"] == 1).sum()
@@ -279,9 +284,18 @@ class Evaluation_master:
             print(f"Human evaluation impact: ones_before: {number_one_before} ones_after: {h_e_number_of_ones} human evaluation impact: {h_e_number_of_ones-number_one_before}")
         
         def getMetricsStatistics(self):
+            """! Prints the Other metrics statistics like std. dev, average.
+                @note You need to load the excel to analyze first
+                @param None
+                @return None
+            """
             print(f"Meteor statistics, mean: {self.excel_to_analyze["METEOR_M"].mean()} std_dev: {self.excel_to_analyze["METEOR_M"].std()}")
 
         def createExcel(self):
+            """! Create the excel for doing the analysis
+                @param None
+                @return None
+            """
             df = pd.DataFrame()
             in_text = []
             refs_text = []
@@ -303,6 +317,7 @@ class Evaluation_master:
                     line = file.readline().strip()    
             self.m_m.load_hyps(hyps_text)
             self.m_m.load_refs(refs_text)
+
             df['IN'] = in_text
             df['REFS'] = refs_text
             df['HYPS'] = hyps_text
@@ -310,8 +325,9 @@ class Evaluation_master:
             df['ED_M'] = self.m_m.calc_ed()
             df['METEOR_M'] = self.m_m.calc_meteor()
             df['LCS_M'] = self.m_m.calc_lcs()
+            df['CRYSTALB_M'] = self.m_m.calc_crystalBLEU(re_compute_ngrams=False)
             df['HUMAN_E'] = df['EM_M']
-            df.to_excel(self.excel_name,index=False)
+            #df.to_excel(self.excel_name,index=False)
         
 
 
