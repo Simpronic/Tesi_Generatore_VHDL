@@ -1,3 +1,6 @@
+
+"""! @brief Class that let you perform the analysis on file."""
+
 import pandas as pd
 from Metrics_manager import *
 from datetime import datetime
@@ -8,8 +11,8 @@ import pdb
 
 REQUEST_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Dataset\splitted_files\vhdl-test.in"
 REFS_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Dataset\splitted_files\vhdl-test.out"
-COLUMS = {"IN","REFS","HYPS","EM_M","ED_M","METEOR_M","LCS_M","CRYSTALB_M","HUMAN_E"}
-METRICS_NAME = ["EM_M","ED_M","METEOR_M","LCS_M","CRYSTALB_M"]
+COLUMS = {"IN","REFS","HYPS","EM_M","ED_M","METEOR_M","LCS_M","CRYSTALB_M","SACREB_M","ROUGE_M","HUMAN_E"}
+METRICS_NAME = ["EM_M","ED_M","METEOR_M","LCS_M","CRYSTALB_M","SACREB_M","ROUGE_M"]
 
 
 class Evaluation_master:
@@ -326,8 +329,10 @@ class Evaluation_master:
             df['METEOR_M'] = self.m_m.calc_meteor()
             df['LCS_M'] = self.m_m.calc_lcs()
             df['CRYSTALB_M'] = self.m_m.calc_crystalBLEU(re_compute_ngrams=False)
+            df['SACREB_M'] = self.m_m.calc_sacreBLEU()
+            df['ROUGE_M'] = self.m_m.calc_rouge(self.model_output_path,self.refs_path)
             df['HUMAN_E'] = df['EM_M']
-            #df.to_excel(self.excel_name,index=False)
+            df.to_excel(self.excel_name,index=False)
         
 
 

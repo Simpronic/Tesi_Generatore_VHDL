@@ -42,6 +42,18 @@ Spearman P-value: 1.977603257087343e-35
 Kendall Correlation: 0.5480640554580809
 Kendall P-value: 1.2061543379188338e-28
 
+Analizyng SACREB_M...
+Spearman Correlation: 0.499381642300424
+Spearman P-value: 5.778959927197006e-22
+Kendall Correlation: 0.44848602230277834
+Kendall P-value: 2.201721461652541e-19
+
+Analizyng ROUGE_M...
+Spearman Correlation: 0.5701254229554547
+Spearman P-value: 1.699681371997298e-29
+Kendall Correlation: 0.49776546568363333
+Kendall P-value: 8.847041720560048e-25
+
 ANALISI PER CATEGORIA
 
 library import : 0.75
