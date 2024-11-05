@@ -1,81 +1,107 @@
 STATISTICHE DI VALUTAZIONE 
 
-Tempo medio per entry: 44373 ms (0:44:37 minuti:secondi:millisecondi)
-Tempo massimo per 5 entry: 414042 ms (6:54:42 minuti:secondi:millisecondi) 
-Righe relative al tempo massiimo: 271,272,273,274,275
-Human evaluation impact: ones_before: 146 ones_after: 264 human evaluation impact: 118
-Accuracy pre_HE: 0.44785276073619634 post HE: 0.8098159509202454   
+Tempo medio per entry: 29069.203773584908 ms (0:0:29:69  ore:minuti:secondi:millisecondi)
+Tempo massimo per 5 entry: 372010 ms (0:6:12:10  ore:minuti:secondi:millisecondi) 
+Righe relative al tempo massiimo: 239,240,241,242,243
+Human evaluation impact: ones_before: 40 ones_after: 122 human evaluation impact: 82
+Accuracy pre_HE: 0.12269938650306748 post HE: 0.37423312883435583  
 
 ANALISI Di CORRELAZIONE
 
-Correlazione con EM_M
-Spearman Correlation: 0.4364495566365208
-Spearman P-value: 1.3585133864772202e-16
-Kendall Correlation: 0.43644955663652074
-Kendall P-value: 3.597620420560421e-15
+Analizyng EM_M...
+Spearman Correlation: 0.4835953847583517
+Spearman P-value: 1.6409497894583402e-20
+Kendall Correlation: 0.48359538475835157
+Kendall P-value: 2.8280968014076613e-18
 
 
 
-Correlazione con ED_M
-Spearman Correlation: 0.6305263765357484
-Spearman P-value: 1.5497396933622763e-37
-Kendall Correlation: 0.5499585620712917
-Kendall P-value: 6.1066808412991614e-30
+Analizyng ED_M...
+Spearman Correlation: 0.5646001581126905
+Spearman P-value: 7.674226129823134e-29
+Kendall Correlation: 0.46479629191544186
+Kendall P-value: 2.4741042399917055e-24
 
 
 
-Correlazione con METEOR_M
-Spearman Correlation: 0.6303128924143324
-Spearman P-value: 1.6666007692649052e-37
-Kendall Correlation: 0.5192297675845867
-Kendall P-value: 6.381843258201043e-30
+Analizyng METEOR_M...
+Spearman Correlation: 0.676789567254319
+Spearman P-value: 5.205636008661784e-45
+Kendall Correlation: 0.5561091684782541
+Kendall P-value: 3.070396144856765e-34
+
+
 
 Analizyng LCS_M...
-Spearman Correlation: 0.6309617926740679
-Spearman P-value: 1.3359410668844514e-37
-Kendall Correlation: 0.5503447293138786
-Kendall P-value: 5.58143888337334e-30
+Spearman Correlation: 0.5505100233541671
+Spearman P-value: 3.162853318622326e-27
+Kendall Correlation: 0.4532182206414441
+Kendall P-value: 3.258598540672895e-23
+
+
+
+Analizyng CRYSTALB_M...
+Spearman Correlation: 0.5035370883018652
+Spearman P-value: 2.3260447599088197e-22
+Kendall Correlation: 0.42685824597925554
+Kendall P-value: 1.1095042667703817e-19
+
+
+
+Analizyng SACREB_M...
+Spearman Correlation: 0.5097574286849782
+Spearman P-value: 5.818368249649126e-23
+Kendall Correlation: 0.4248516698970015
+Kendall P-value: 3.936356035305505e-20
+
+
+
+Analizyng ROUGE_M...
+Spearman Correlation: 0.5887374133398929
+Spearman P-value: 8.5445530921117e-32
+Kendall Correlation: 0.4872166010620214
+Kendall P-value: 2.575869573982501e-26
 
 ANALISI PER CATEGORIA
 
-library import : 0.75
+library import : 0.25
 entity definition with generic : 0.5
-entity definition without generic : 0.875
+entity definition without generic : 0.75
 process : 0.5
-after assignment : 1.0
-signal definition : 0.9459459459459459
-enumerative data type : 1.0
-if statement condition : 0.9
-signal assignment : 1.0
-conditional assignment : 0.875
-case statement : 0.875
-increment/decrement of variables/signals : 1.0
-architecture definition : 1.0
-component definition : 1.0
-component instantiation : 0.9
-wait instructions : 1.0
-complex process : 0.9090909090909091
-signal definition for interfaces : 1.0
-constant definition : 1.0
-for generate construct : 0.6666666666666666
-array definition : 1.0
-element array assignment : 1.0
-generic definition : 1.0
-memory indexing : 0.8333333333333334
-selected signal assignment : 1.0
-assertion statement : 0.16666666666666666
+after assignment : 0.6666666666666666
+signal definition : 0.7837837837837838
+enumerative data type : 0.3333333333333333
+if statement condition : 0.3
+signal assignment : 0.5454545454545454
+conditional assignment : 0.25
+case statement : 0.125
+increment/decrement of variables/signals : 0.0
+architecture definition : 0.3333333333333333
+component definition : 0.125
+component instantiation : 0.3
+wait instructions : 0.4
+complex process : 0.2727272727272727
+signal definition for interfaces : 0.5625
+constant definition : 0.8888888888888888
+for generate construct : 0.0
+array definition : 0.5
+element array assignment : 0.3333333333333333
+generic definition : 0.0
+memory indexing : 0.3333333333333333
+selected signal assignment : 0.42857142857142855
+assertion statement : 0.0
 complex component definition : 0.5
-variable definition and assignment : 1.0
-shift operation : 1.0
-concatenate : 0.8235294117647058
-high-level comments : 0.41509433962264153
+variable definition and assignment : 0.75
+shift operation : 0.8333333333333334
+concatenate : 0.17647058823529413
+high-level comments : 0.1320754716981132
 
-Max time 414042 for:
-271 : high-level comments
-272 : high-level comments
-273 : high-level comments
-274 : high-level comments
-275 : high-level comments
+Max time 372010 for:
+239 : high-level comments
+240 : high-level comments
+241 : high-level comments
+242 : high-level comments
+243 : high-level comments
 
 EVENTUALI PROBLEMI
 

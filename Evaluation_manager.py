@@ -195,7 +195,7 @@ class Evaluation_master:
             df = pd.read_csv(tim_file_path, header=None, names=['Righe', 'Time'], quotechar='"')
             times = [self.__time_to_ms(time) for time in df["Time"]]
             df["Time"] = times
-            rows,max_elab_time_ms,max_elab_time,avg_time_ms,c_i,avg_time= self.evaluationTimeAnalysis(tim_file_path)
+            rows,max_elab_time_ms,max_elab_time,avg_time_ms,c_i,avg_time,total_evaluation_time= self.evaluationTimeAnalysis(tim_file_path)
             row_categ = []
             for row in rows:
                 lines = row.split(",")
@@ -269,7 +269,7 @@ class Evaluation_master:
         def evaluationTimeAnalysis(self,evaluation_file_times):
             """! Performs the evaluation time analysis 
                 @param evaluation_file_times
-                @return rows,max_elab_time,max_elab_time_ms,avg_time,c_i,avg_time_ms
+                @return rows,max_elab_time,max_elab_time_ms,avg_time,c_i,avg_time_ms,total_evaluation_time
             """
             df = pd.read_csv(evaluation_file_times, header=None, names=['Righe', 'Time'], quotechar='"')
             times = [self.__time_to_ms(time) for time in df["Time"]]
