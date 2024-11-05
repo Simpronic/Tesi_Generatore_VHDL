@@ -51,21 +51,31 @@ def loadStatisticsExcel():
 def evaluationTimeAnalysis():
     print("Insert evaluation time file path")
     evaluation_t_file_path = input()
-    rows,max_elab_time_ms,max_elab_time,avg_time_ms,c_i,avg_time = evaluation_master.evaluationTimeAnalysis(evaluation_t_file_path)
+    rows,max_elab_time_ms,max_elab_time,avg_time_ms,c_i,avg_time,total_evaluation_time = evaluation_master.evaluationTimeAnalysis(evaluation_t_file_path)
     for row in rows:
-        print(f"Max Time: {max_elab_time_ms} ms ({max_elab_time}  minuti:secondi:millisecondi) for {row} rows")
+        print(f"Max Time: {max_elab_time_ms} ms ({max_elab_time}  ore:minuti:secondi:millisecondi) for {row} rows")
         
-    print(f"AVG time for entry: {avg_time_ms} ms C.I 95%:{c_i};({avg_time}  minuti:secondi:millisecondi)")
+    print(f"AVG time for entry: {avg_time_ms} ms C.I 95%:{c_i};({avg_time}  ore:minuti:secondi:millisecondi)")
+    print(f"Total evaluation time for model: {total_evaluation_time}")
 
     
 def correlationAnalysis():
     evaluation_master.correlationAnalysis()
 
 def he_impact():
-   evaluation_master.getHEImpact()
+   h_e_number_of_ones,number_of_records,number_one_before = evaluation_master.getHEImpact()
+   print(f"Number of records: {number_of_records}")
+   print(f"Human evaluation statistics: ones: {h_e_number_of_ones} zeros: {number_of_records-h_e_number_of_ones}")
+   print(f"Human evaluation impact: ones_before: {number_one_before} ones_after: {h_e_number_of_ones} human evaluation impact: {h_e_number_of_ones-number_one_before}")
 
 def metrics_statistics():
-   evaluation_master.getMetricsStatistics()
+   metric_dict = evaluation_master.getMetricsStatistics()
+   for key in metric_dict.keys():
+       print(f"For metric {key}: \n")
+       print(f"mean: {metric_dict[key][0]}")
+       print(f"std: {metric_dict[key][1]}")
+       print(f"median: {metric_dict[key][2]} \n")
+       
 
 def rom_phenomena():
     print("In deletion...")

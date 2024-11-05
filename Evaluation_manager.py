@@ -85,13 +85,15 @@ class Evaluation_master:
         def __millisecondi_in_tempo(self,millisecondi):
             """! Converts a time in milliseconds in minutes:seconds:milliseconds 
                 @param milliseconds: time to convert.
-                @return f"{minuti:2}:{secondi:2}:{millisecondi:2}"
+                @return f"{ore}:{minuti}:{secondi}:{millisecondi:.0f}"
             """
-            minuti = millisecondi // (60 * 1000)
-            millisecondi %= (60 * 1000)
-            secondi = millisecondi // 1000
-            millisecondi %= 1000
-            return f"{minuti:2}:{secondi:2}:{millisecondi:2}" 
+            ore = int(millisecondi // 3600000)
+            millisecondi = millisecondi % 3600000
+            minuti = int(millisecondi // 60000)
+            millisecondi = millisecondi % 60000
+            secondi = int(millisecondi // 1000)
+            millisecondi = millisecondi % 1000
+            return f"{ore}:{minuti}:{secondi}:{millisecondi:.0f}" 
         
         def model_accuracy_HE(self):
             """! Calculates the model accuracy post-HE by doing number_of_ones/total_number_of_records
@@ -248,6 +250,22 @@ class Evaluation_master:
             """
             return [time/5 for time in time_df["Time"]]
         
+        def __TotalEvaluationTime(self,df):
+            """! Stimate the total time taken to evaluate a output model, sum over the time recorded and sum the average time for the not recorded rows
+                @param time_df
+                @return time_avg: array of averages of group of 5 row 
+            """
+            total_evaluated_entry = 5*len(df)
+            avg_time_for_entry = np.mean(self.__calculateAVGTime(df))
+            h_e_number_of_ones,number_of_records,number_one_before = self.getHEImpact()
+            total_zeros = number_of_records-number_one_before
+            mean_entry_evaluation = avg_time_for_entry*(total_zeros-total_evaluated_entry)
+            evaluated_time = df["Time"].sum()
+
+            return self.__millisecondi_in_tempo(evaluated_time+mean_entry_evaluation)
+            
+
+
         def evaluationTimeAnalysis(self,evaluation_file_times):
             """! Performs the evaluation time analysis 
                 @param evaluation_file_times
@@ -257,7 +275,8 @@ class Evaluation_master:
             times = [self.__time_to_ms(time) for time in df["Time"]]
             df["Time"] = times
             max_elab_time,rows = self.__max_elab_time_and_rows(df)
-            return rows,max_elab_time,self.__millisecondi_in_tempo(max_elab_time),self.__calculateAVGTime(df),self.__confidence_interval_calculation(self.__calculateAVGTime(df)),self.__millisecondi_in_tempo(int(np.mean(self.__calculateAVGTime(df))))
+            total_evaluation_time = self.__TotalEvaluationTime(df)
+            return rows,max_elab_time,self.__millisecondi_in_tempo(max_elab_time),np.mean(self.__calculateAVGTime(df)),self.__confidence_interval_calculation(self.__calculateAVGTime(df)),self.__millisecondi_in_tempo(int(np.mean(self.__calculateAVGTime(df)))),total_evaluation_time
            
         def loadExcel(self,excel_path): #Sincera che l'excel a cui faccio riferimento ha il giusto formato (riporta le colonne che mi aspetto da un excel generato da questo manager)
             """! Loads the excel for analysis
@@ -276,23 +295,26 @@ class Evaluation_master:
             """! Prints the HE impact on the LLM output file
                 @note You need to load the excel to analyze first
                 @param None
-                @return None
+                @return h_e_number_of_ones,number_of_records,number_one_before
             """
             number_of_records = len(self.excel_to_analyze)
-            print(f"Number of records: {number_of_records}")
             h_e_number_of_ones = (self.excel_to_analyze["HUMAN_E"] == 1).sum()
             number_one_before = (self.excel_to_analyze["EM_M"] == 1).sum()
-
-            print(f"Human evaluation statistics: ones: {h_e_number_of_ones} zeros: {number_of_records-h_e_number_of_ones}")
-            print(f"Human evaluation impact: ones_before: {number_one_before} ones_after: {h_e_number_of_ones} human evaluation impact: {h_e_number_of_ones-number_one_before}")
+            return h_e_number_of_ones,number_of_records,number_one_before
+    
         
         def getMetricsStatistics(self):
             """! Prints the Other metrics statistics like std. dev, average.
                 @note You need to load the excel to analyze first
                 @param None
-                @return None
+                @return statistics_dict: key -> Array of statistics, [0] --> mean, [1] --> std, [2] --> median
             """
-            print(f"Meteor statistics, mean: {self.excel_to_analyze["METEOR_M"].mean()} std_dev: {self.excel_to_analyze["METEOR_M"].std()}")
+            statistics_dict = {}
+            for metric in METRICS_NAME:
+                statistics_dict.setdefault(metric,[]).append(self.excel_to_analyze[metric].mean())
+                statistics_dict.setdefault(metric,[]).append(self.excel_to_analyze[metric].std())
+                statistics_dict.setdefault(metric,[]).append(self.excel_to_analyze[metric].median())
+            return statistics_dict
 
         def createExcel(self):
             """! Create the excel for doing the analysis
