@@ -212,16 +212,6 @@ class Evaluation_master:
             """
             self.excel_to_analyze = None
 
-        def rom_phenomenaAnalisis(self):
-            """! Let you analyze the random occurrence of ROM Blocks
-                @note You need to load the excel to analyze first
-                @param None
-                @return None
-            """
-            filtro =  self.excel_to_analyze[self.excel_to_analyze["HYPS"].str.contains('ROM|RAM', case=False, na=False)]
-            filtro = filtro[~filtro["IN"].str.contains('ROM|RAM', case=False, na=False)]
-            print(f"Entry with random ROM block: ")
-            print(len(filtro["HYPS"]))
 
         def correlationAnalysis(self): #Assumo che il df sia stato caricato
             """! Makes the correlation analysis with all the metrics with Kendall and Spearman
@@ -355,9 +345,20 @@ class Evaluation_master:
             df['ROUGE_M'] = self.m_m.calc_rouge(self.model_output_path,self.refs_path)
             df['HUMAN_E'] = df['EM_M']
             df.to_excel(self.excel_name,index=False)
+  
         
-
-
+'''
+    def rom_phenomenaAnalisis(self):
+            """! Let you analyze the random occurrence of ROM Blocks
+                @note You need to load the excel to analyze first
+                @param None
+                @return None
+            """
+            filtro =  self.excel_to_analyze[self.excel_to_analyze["HYPS"].str.contains('ROM|RAM', case=False, na=False)]
+            filtro = filtro[~filtro["IN"].str.contains('ROM|RAM', case=False, na=False)]
+            print(f"Entry with random ROM block: ")
+            print(len(filtro["HYPS"]))
+'''
 #C:\Users\marcd\Desktop\Tesi\Work\GitRepo\Tesi_Generatore_VHDL\HE\W_in_progress\AnalisiCodeT5_225.xlsx
 
 #C:\Users\marcd\Desktop\Tesi\Work\GitRepo\Tesi_Generatore_VHDL\Dati_appoggio_analisi\TestInCateg.xlsx
