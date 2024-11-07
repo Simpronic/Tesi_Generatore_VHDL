@@ -3,10 +3,10 @@ scipy==1.14.1
 numpy==2.0.0
 evaluate
 pylcs
-bleu_score2
-crystal_bleu
+crystalbleu
 datetime
-ast
+evaluate
 typing
 sacrebleu
 rouge
+ast
