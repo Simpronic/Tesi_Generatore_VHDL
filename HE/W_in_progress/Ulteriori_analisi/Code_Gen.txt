@@ -13,6 +13,8 @@ Spearman Correlation: 0.6452962288081903
 Spearman P-value: 8.800977306574105e-40
 Kendall Correlation: 0.6452962288081902
 Kendall P-value: 2.7928108702889407e-31
+Pearson Correlation: 0.6452962288081904
+Pearson P-value: 8.800977306574371e-40
 
 
 Correlazione con ED_M
@@ -20,6 +22,8 @@ Spearman Correlation: 0.6683094021166562
 Spearman P-value: 1.539219398119651e-43
 Kendall Correlation: 0.5828796191316977
 Kendall P-value: 1.9842621343292477e-33
+Pearson Correlation: 0.6138533591360145
+Pearson P-value: 3.836519722947205e-35
 
 
 
@@ -28,30 +32,40 @@ Spearman Correlation: 0.5903885742857747
 Spearman P-value: 5.254595486088146e-32
 Kendall Correlation: 0.48538321545072177
 Kendall P-value: 1.8720955948473932e-26
+Pearson Correlation: 0.5533004842051263
+Pearson P-value: 1.535669874480114e-27
 
 Analizyng LCS_M...
 Spearman Correlation: 0.6725297296452645
 Spearman P-value: 2.8935417190424917e-44
 Kendall Correlation: 0.5865741347970101
 Kendall P-value: 7.862217761785105e-34
+Pearson Correlation: 0.611326728909529
+Pearson P-value: 8.596404058538338e-35
 
 Analizyng CRYSTALB_M...
 Spearman Correlation: 0.5567326818160806
 Spearman P-value: 6.255886796007765e-28
 Kendall Correlation: 0.4933851246976208
 Kendall P-value: 1.0519529696068285e-23
+Pearson Correlation: 0.5050379270239078
+Pearson P-value: 1.6693136567862485e-22
 
 Analizyng SACREB_M...
 Spearman Correlation: 0.56806978229577
 Spearman P-value: 2.987939852286516e-29
 Kendall Correlation: 0.5045246469906297
 Kendall P-value: 1.298551123817952e-24
+Pearson Correlation: 0.44112185911803564
+Pearson P-value: 5.906253343056735e-17
 
 Analizyng ROUGE_M...
 Spearman Correlation: 0.6687396478189839
 Spearman P-value: 1.2997116263282959e-43
 Kendall Correlation: 0.5856026536349318
 Kendall P-value: 1.8060324706116813e-33
+Pearson Correlation: 0.6079592226538288
+Pearson P-value: 2.4913277212782262e-34
 
 ANALISI PER CATEGORIA
 

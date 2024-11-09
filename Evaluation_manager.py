@@ -4,7 +4,7 @@
 import pandas as pd
 from Metrics_manager import *
 from datetime import datetime
-from scipy.stats import spearmanr, kendalltau
+from scipy.stats import spearmanr, kendalltau,pearsonr
 import scipy.stats as st 
 import numpy as np
 import pdb
@@ -213,25 +213,18 @@ class Evaluation_master:
             self.excel_to_analyze = None
 
 
-        def correlationAnalysis(self): #Assumo che il df sia stato caricato
-            """! Makes the correlation analysis with all the metrics with Kendall and Spearman
+        def correlationAnalysis(self,metric): #Assumo che il df sia stato caricato
+            """! Makes the correlation analysis with the metric with Kendall, Spearman,pearson
                 @note You need to load the excel to analyze first
-                @param None
-                @return None
+                @param Metric: the name of the metric into the xlsx
+                @return kendall,kendall_p,spearman,spearman_p,pearson,pearson_p
             """
+            print(f"Analizyng {metric}...")
             he_m = self.excel_to_analyze["HUMAN_E"]
-            for metric in METRICS_NAME:
-                print(f"Analizyng {metric}...")
-                spearman_corr, spearman_p_value = spearmanr(he_m, self.excel_to_analyze[metric])
-                kendall_corr, kendall_p_value = kendalltau(he_m, self.excel_to_analyze[metric])
-
-                print("Spearman Correlation:", spearman_corr)
-                print("Spearman P-value:", spearman_p_value)
-
-                print("Kendall Correlation:", kendall_corr)
-                print("Kendall P-value:", kendall_p_value)
-
-                print("\n\n")
+            spearman_corr, spearman_p_value = spearmanr(he_m, self.excel_to_analyze[metric])
+            kendall_corr, kendall_p_value = kendalltau(he_m, self.excel_to_analyze[metric])
+            pearson_corr, pearson_p_value = pearsonr(he_m, self.excel_to_analyze[metric])
+            return kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value
 
         def __calculateAVGTime(self,time_df):
             """! Calculate th average time in a time series

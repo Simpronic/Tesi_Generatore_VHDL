@@ -4,9 +4,11 @@ numpy==2.0.0
 evaluate
 pylcs
 crystalbleu
+pygments
 datetime
 evaluate
 typing
 sacrebleu
 rouge
 ast
+openpyxl

@@ -60,7 +60,19 @@ def evaluationTimeAnalysis():
 
     
 def correlationAnalysis():
-    evaluation_master.correlationAnalysis()
+   for metric in METRICS_NAME:
+    kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value = evaluation_master.correlationAnalysis(metric)
+    
+    print("Spearman Correlation:", spearman_corr)
+    print("Spearman P-value:", spearman_p_value)
+
+    print("Kendall Correlation:", kendall_corr)
+    print("Kendall P-value:", kendall_p_value)
+
+    print("Pearson Correlation:", pearson_corr)
+    print("Pearson P-value:", pearson_p_value)
+
+    print("\n\n")
 
 def he_impact():
    h_e_number_of_ones,number_of_records,number_one_before = evaluation_master.getHEImpact()
