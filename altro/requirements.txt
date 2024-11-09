@@ -10,5 +10,4 @@ evaluate
 typing
 sacrebleu
 rouge
-ast
 openpyxl

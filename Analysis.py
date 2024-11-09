@@ -20,6 +20,8 @@
 
 
 from Evaluation_manager import *
+import os
+
 
 evaluation_master = Evaluation_master(None,None,None,None)
 current_excel_analysis = None
@@ -113,7 +115,37 @@ def time_categ_analysis():
     for row in row_categ:
         print(f"{row[0]} : {row[1]}")
 
+def createglobaldf(f_p):
+    gdf = pd.DataFrame()
+    dati = []
+    file_xlsx = [file for file in os.listdir(f_p) if file.endswith(".xlsx")]
+    file_xlsx = [os.path.join(f_p, file) for file in file_xlsx]
+    for file in file_xlsx:
+        df = pd.read_excel(file,engine='openpyxl')
+        dati.append(df)
+    gdf = pd.concat(dati,ignore_index=True)
+
+    return gdf
+
+def globalCorrelation():
+    print("To perform global correlation put all the xlsx file in one folder and then enter the folder path\n\n")
+    print("Folder path: ")
+    f_p = input()
+    g_df = createglobaldf(f_p)
+    for metric in METRICS_NAME:
+        kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value = evaluation_master.globalCorrelation(g_df,metric)
+        print("Spearman Correlation:", spearman_corr)
+        print("Spearman P-value:", spearman_p_value)
+
+        print("Kendall Correlation:", kendall_corr)
+        print("Kendall P-value:", kendall_p_value)
+
+        print("Pearson Correlation:", pearson_corr)
+        print("Pearson P-value:", pearson_p_value)
+
+        print("\n\n")
     
+
 def default():
     exit()
 
@@ -128,6 +160,7 @@ def statisticsMenu():
     print("6. Model accuracy pre and post HE")
     print("7. Category Analysis")
     print("8. Time analysis for category")
+    print("9. Global correlation analysis")
     print("Other. Exit")
     choice = int(input())
     switch_statistics.get(choice,default)()
@@ -138,10 +171,11 @@ switch_statistics = {
     2: correlationAnalysis,
     3: he_impact,
     4: metrics_statistics,
-    6: evaluationTimeAnalysis,
-    7: model_acc,
-    8: categ_analysis,
-    9: time_categ_analysis
+    5: evaluationTimeAnalysis,
+    6: model_acc,
+    7: categ_analysis,
+    8: time_categ_analysis,
+    9: globalCorrelation
 }
 
 

@@ -212,6 +212,17 @@ class Evaluation_master:
             """
             self.excel_to_analyze = None
 
+        def globalCorrelation(self,gdf,metric):
+            """! Makes the global correlation analysis with the metric with Kendall, Spearman,pearson
+                @param Metric: the name of the metric into the xlsx
+                @param gdf: the global dataframe resulting from the concatenation of all the files into the specified folder 
+                @return kendall,kendall_p,spearman,spearman_p,pearson,pearson_p
+            """
+            ex_df =  self.excel_to_analyze
+            self.excel_to_analyze = gdf
+            kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value = self.correlationAnalysis(metric)
+            self.excel_to_analyze = ex_df
+            return kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value
 
         def correlationAnalysis(self,metric): #Assumo che il df sia stato caricato
             """! Makes the correlation analysis with the metric with Kendall, Spearman,pearson
