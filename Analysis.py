@@ -20,12 +20,14 @@
 
 
 from Evaluation_manager import *
+import configparser
 import os
 
 
 evaluation_master = Evaluation_master(None,None,None,None)
 current_excel_analysis = None
-
+config = configparser.ConfigParser()
+config.read('config.cfg')
 
 def excelCreation():
     global evaluation_master
@@ -33,7 +35,7 @@ def excelCreation():
     model_out_path = input()
     print("Insert excel name")
     excel_name = input()
-    evaluation_master.setAllParameters(REQUEST_PATH,model_out_path,REFS_PATH,excel_name)
+    evaluation_master.setAllParameters(config['DEFAULT']['test_in_path'],model_out_path,config['DEFAULT']['refs_path'],excel_name)
     evaluation_master.createExcel()
 
 def loadStatisticsExcel():
@@ -62,7 +64,8 @@ def evaluationTimeAnalysis():
 
     
 def correlationAnalysis():
-   for metric in METRICS_NAME:
+   metrics = config.get("STATISTICS","metrics_name").split(",")
+   for metric in metrics:
     kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value = evaluation_master.correlationAnalysis(metric)
     
     print("Spearman Correlation:", spearman_corr)
@@ -132,7 +135,8 @@ def globalCorrelation():
     print("Folder path: ")
     f_p = input()
     g_df = createglobaldf(f_p)
-    for metric in METRICS_NAME:
+    metrics = config.get("STATISTICS","metrics_name").split(",")
+    for metric in metrics:
         kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value = evaluation_master.globalCorrelation(g_df,metric)
         print("Spearman Correlation:", spearman_corr)
         print("Spearman P-value:", spearman_p_value)

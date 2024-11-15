@@ -7,16 +7,11 @@ from datetime import datetime
 from scipy.stats import spearmanr, kendalltau,pearsonr
 import scipy.stats as st 
 import numpy as np
-import pdb
-
-REQUEST_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Dataset\splitted_files\vhdl-test.in"
-REFS_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Dataset\splitted_files\vhdl-test.out"
+import configparser
 
 #REQUEST_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Results\Closed-source-models\Testset\vhdl-test.in"
 #REFS_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Results\Closed-source-models\Testset\vhdl-test.out"
 
-COLUMS = {"IN","REFS","HYPS","EM_M","ED_M","METEOR_M","LCS_M","CRYSTALB_M","SACREB_M","ROUGE_M","HUMAN_E"}
-METRICS_NAME = ["EM_M","ED_M","METEOR_M","LCS_M","CRYSTALB_M","SACREB_M","ROUGE_M"]
 
 
 class Evaluation_master:
@@ -41,6 +36,8 @@ class Evaluation_master:
                 self.excel_name = excel_name+".xlsx"
             self.m_m = Metrics_manager()
             self.excel_to_analyze = None
+            self.config_p = configparser.ConfigParser()
+            self.config_p.read('config.cfg')
 
         def __confidence_interval_t_student(self,data):
 
@@ -283,7 +280,8 @@ class Evaluation_master:
                 @return None
             """
             df = pd.read_excel(excel_path,engine='openpyxl')
-            all_colums_in_file = all(item in df.columns for item in COLUMS)
+            cols = self.config_p.get("STATISTICS","colums").split(",")
+            all_colums_in_file = all(item in df.columns for item in cols)
             if(all_colums_in_file):
                 self.excel_to_analyze = df
             else:
@@ -308,7 +306,8 @@ class Evaluation_master:
                 @return statistics_dict: key -> Array of statistics, [0] --> mean, [1] --> std, [2] --> median
             """
             statistics_dict = {}
-            for metric in METRICS_NAME:
+            metrics = self.config_p.get("STATISTICS","metrics_name").split(",")
+            for metric in metrics:
                 statistics_dict.setdefault(metric,[]).append(self.excel_to_analyze[metric].mean())
                 statistics_dict.setdefault(metric,[]).append(self.excel_to_analyze[metric].std())
                 statistics_dict.setdefault(metric,[]).append(self.excel_to_analyze[metric].median())

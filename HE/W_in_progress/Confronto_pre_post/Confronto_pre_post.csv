@@ -2,3 +2,5 @@ NOME MODELLO,PRE(ones),POST(ones),TOTAL_ENTRIES
 CodeGen,150,219,326
 CodeT5_220,146,264,326
 CodeGPT,,,
+ClaudeSonnet,,,
+CodeT5_770,,,

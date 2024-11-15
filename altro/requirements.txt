@@ -11,3 +11,4 @@ typing
 sacrebleu
 rouge
 openpyxl
+configparser
