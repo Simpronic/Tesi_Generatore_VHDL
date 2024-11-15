@@ -1,10 +1,10 @@
 STATISTICHE DI VALUTAZIONE 
 
-Tempo medio per entry: 
-Tempo massimo per 5 entry: 
-Righe relative al tempo massiimo: 
-Human evaluation impact: ones_before: 93 ones_after:  human evaluation impact: 
-Accuracy pre_HE: 0.2852760736196319 post HE:    
+Tempo medio per entry: 44373 ms (0:44:37 minuti:secondi:millisecondi)
+Tempo massimo per 5 entry: 414042 ms (6:54:42 minuti:secondi:millisecondi) 
+Righe relative al tempo massiimo: 271,272,273,274,275
+Human evaluation impact: ones_before: 165 ones_after: human evaluation impact: 
+Accuracy pre_HE: 0.5061349693251533 post HE: 
 
 ANALISI Di CORRELAZIONE
 

@@ -11,6 +11,10 @@ import pdb
 
 REQUEST_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Dataset\splitted_files\vhdl-test.in"
 REFS_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Dataset\splitted_files\vhdl-test.out"
+
+#REQUEST_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Results\Closed-source-models\Testset\vhdl-test.in"
+#REFS_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Results\Closed-source-models\Testset\vhdl-test.out"
+
 COLUMS = {"IN","REFS","HYPS","EM_M","ED_M","METEOR_M","LCS_M","CRYSTALB_M","SACREB_M","ROUGE_M","HUMAN_E"}
 METRICS_NAME = ["EM_M","ED_M","METEOR_M","LCS_M","CRYSTALB_M","SACREB_M","ROUGE_M"]
 
