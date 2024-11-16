@@ -22,6 +22,7 @@
 from Evaluation_manager import *
 import configparser
 import os
+import csv
 
 
 evaluation_master = Evaluation_master(None,None,None,None)
@@ -149,6 +150,18 @@ def globalCorrelation():
 
         print("\n\n")
     
+def commonFailure():
+    print("To perform common failure analysis put all the xlsx file in one folder and then enter the folder path\n\n")
+    print("Folder path: ")
+    f_p = input()
+    failure_array = evaluation_master.commonFailureAnalysis(f_p)
+    not_zero_values = [(index, value) for index, value in enumerate(failure_array) if value != 0]
+    print("Writing file csv ....")
+    with open("Common_failure.csv",mode=
+              'w',newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Index','Failures'])
+        writer.writerows(not_zero_values)
 
 def default():
     exit()
@@ -165,6 +178,7 @@ def statisticsMenu():
     print("7. Category Analysis")
     print("8. Time analysis for category")
     print("9. Global correlation analysis")
+    print("10. Common Failure analysis")
     print("Other. Exit")
     choice = int(input())
     switch_statistics.get(choice,default)()
@@ -179,7 +193,8 @@ switch_statistics = {
     6: model_acc,
     7: categ_analysis,
     8: time_categ_analysis,
-    9: globalCorrelation
+    9: globalCorrelation,
+    10: commonFailure
 }
 
 

@@ -213,6 +213,23 @@ class Evaluation_master:
             """
             self.excel_to_analyze = None
 
+        def commonFailureAnalysis(self,f_p):
+            """! Makes analysis on common models failure
+                @Note all the classification file must be in a folder
+                @param f_p: path to the analysis folder
+                @return failure_array_count
+            """
+            file_xlsx = [file for file in os.listdir(f_p) if file.endswith(".xlsx")]
+            file_xlsx = [os.path.join(f_p, file) for file in file_xlsx]
+            file_len = len(pd.read_excel(file_xlsx[0]))
+            failure_array = [0] * file_len
+            for file in file_xlsx:
+                df = pd.read_excel(file)
+                for i in range(len(failure_array)):
+                    if(df["HUMAN_E"][i] == 0):
+                        failure_array[i] += 1
+            return failure_array
+                
         def globalCorrelation(self,gdf,metric):
             """! Makes the global correlation analysis with the metric with Kendall, Spearman,pearson
                 @param Metric: the name of the metric into the xlsx
