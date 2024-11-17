@@ -13,3 +13,4 @@ rouge
 openpyxl
 configparser
 csv
+matplotlib

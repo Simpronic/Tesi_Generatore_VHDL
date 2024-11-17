@@ -23,7 +23,7 @@ from Evaluation_manager import *
 import configparser
 import os
 import csv
-
+import matplotlib.pyplot as plt
 
 evaluation_master = Evaluation_master(None,None,None,None)
 current_excel_analysis = None
@@ -156,12 +156,24 @@ def commonFailure():
     f_p = input()
     failure_array = evaluation_master.commonFailureAnalysis(f_p)
     not_zero_values = [(index, value) for index, value in enumerate(failure_array) if value != 0]
+    indexes = [str(index) for index, value in not_zero_values if value > 2]
+    values = [value for index, value in not_zero_values if value > 2]
     print("Writing file csv ....")
     with open("Common_failure.csv",mode=
               'w',newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['Index','Failures'])
         writer.writerows(not_zero_values)
+    print("Saving plot...")
+    plot_common_f(indexes,values)
+
+def plot_common_f(indices,values):
+    plt.bar(indices, values, color='skyblue',width=0.7, edgecolor='black')
+    plt.xticks(rotation=45)
+    plt.title("Common Failuers")
+    plt.xlabel("Row")
+    plt.ylabel("Number of failure")
+    plt.savefig("Common_Failuers.png")
 
 def default():
     exit()
