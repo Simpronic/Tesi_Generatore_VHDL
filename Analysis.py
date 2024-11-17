@@ -31,6 +31,10 @@ config = configparser.ConfigParser()
 config.read('config.cfg')
 
 def excelCreation():
+    """! Driver for excel creation
+        @param None
+        @return None
+    """
     global evaluation_master
     print("Insert model output path")
     model_out_path = input()
@@ -40,6 +44,10 @@ def excelCreation():
     evaluation_master.createExcel()
 
 def loadStatisticsExcel():
+    """! Loads into evaluation master the xlsx file to perform the analysis
+        @param None
+        @return None
+    """
     global current_excel_analysis
     print("Insert excel path")
     excel_path = input()
@@ -54,6 +62,10 @@ def loadStatisticsExcel():
             print(e)
 
 def evaluationTimeAnalysis():
+    """! Driver for Time analysis
+        @param None
+        @return None
+    """
     print("Insert evaluation time file path")
     evaluation_t_file_path = input()
     rows,max_elab_time_ms,max_elab_time,avg_time_ms,c_i,avg_time,total_evaluation_time = evaluation_master.evaluationTimeAnalysis(evaluation_t_file_path)
@@ -65,30 +77,42 @@ def evaluationTimeAnalysis():
 
     
 def correlationAnalysis():
-   metrics = config.get("STATISTICS","metrics_name").split(",")
-   for metric in metrics:
-    kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value = evaluation_master.correlationAnalysis(metric)
-    
-    print("Spearman Correlation:", spearman_corr)
-    print("Spearman P-value:", spearman_p_value)
+    """! Driver for Correlation analysis
+        @param None
+        @return None
+    """
+    metrics = config.get("STATISTICS","metrics_name").split(",")
+    for metric in metrics:
+        kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value = evaluation_master.correlationAnalysis(metric)
 
-    print("Kendall Correlation:", kendall_corr)
-    print("Kendall P-value:", kendall_p_value)
+        print("Spearman Correlation:", spearman_corr)
+        print("Spearman P-value:", spearman_p_value)
 
-    print("Pearson Correlation:", pearson_corr)
-    print("Pearson P-value:", pearson_p_value)
+        print("Kendall Correlation:", kendall_corr)
+        print("Kendall P-value:", kendall_p_value)
+
+        print("Pearson Correlation:", pearson_corr)
+        print("Pearson P-value:", pearson_p_value)
 
     print("\n\n")
 
 def he_impact():
-   h_e_number_of_ones,number_of_records,number_one_before = evaluation_master.getHEImpact()
-   print(f"Number of records: {number_of_records}")
-   print(f"Human evaluation statistics: ones: {h_e_number_of_ones} zeros: {number_of_records-h_e_number_of_ones}")
-   print(f"Human evaluation impact: ones_before: {number_one_before} ones_after: {h_e_number_of_ones} human evaluation impact: {h_e_number_of_ones-number_one_before}")
+    """! Driver for he impact analysis
+        @param None
+        @return None
+    """
+    h_e_number_of_ones,number_of_records,number_one_before = evaluation_master.getHEImpact()
+    print(f"Number of records: {number_of_records}")
+    print(f"Human evaluation statistics: ones: {h_e_number_of_ones} zeros: {number_of_records-h_e_number_of_ones}")
+    print(f"Human evaluation impact: ones_before: {number_one_before} ones_after: {h_e_number_of_ones} human evaluation impact: {h_e_number_of_ones-number_one_before}")
 
 def metrics_statistics():
-   metric_dict = evaluation_master.getMetricsStatistics()
-   for key in metric_dict.keys():
+    """! Driver for metric statistics analysis
+        @param None
+        @return None
+    """
+    metric_dict = evaluation_master.getMetricsStatistics()
+    for key in metric_dict.keys():
        print(f"For metric {key}: \n")
        print(f"mean: {metric_dict[key][0]}")
        print(f"std: {metric_dict[key][1]}")
@@ -96,9 +120,17 @@ def metrics_statistics():
        
 
 def model_acc():
+    """! Driver for model accuracy (number_of_ones/number_of_records) analysis
+        @param None
+        @return None
+    """
     print(f"pre_HE: {evaluation_master.model_accuracy_pre_HE()} post HE: {evaluation_master.model_accuracy_HE()}")
 
 def categ_analysis():
+    """! Driver for category analysis
+        @param None
+        @return None
+    """
     print("Insert Test in category distribution file path")
     categ_distr_path = input()
     print("Insert Category legend file path")
@@ -108,6 +140,10 @@ def categ_analysis():
         print(f"{cat_dict[score]} : {score_dict[score]} ")
 
 def time_categ_analysis():
+    """! Driver for category time analysis
+        @param None
+        @return None
+    """
     print("Insert Test in category distribution file path")
     categ_distr_path = input()
     print("Insert Category legend file path")
@@ -120,6 +156,10 @@ def time_categ_analysis():
         print(f"{row[0]} : {row[1]}")
 
 def createglobaldf(f_p):
+    """! Driver for creating a big dataframe to perform global correlation analysis
+        @param f_p: folder path, the folder where we can find all the xlsx analysis files
+        @return gdf: global data frame
+    """
     gdf = pd.DataFrame()
     dati = []
     file_xlsx = [file for file in os.listdir(f_p) if file.endswith(".xlsx")]
@@ -132,6 +172,10 @@ def createglobaldf(f_p):
     return gdf
 
 def globalCorrelation():
+    """! Driver for global correlation analysis
+        @param None
+        @return None
+    """
     print("To perform global correlation put all the xlsx file in one folder and then enter the folder path\n\n")
     print("Folder path: ")
     f_p = input()
@@ -151,6 +195,10 @@ def globalCorrelation():
         print("\n\n")
     
 def commonFailure():
+    """! Driver for common failure analysis
+        @param None
+        @return None
+    """
     print("To perform common failure analysis put all the xlsx file in one folder and then enter the folder path\n\n")
     print("Folder path: ")
     f_p = input()
