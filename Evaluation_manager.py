@@ -169,30 +169,43 @@ class Evaluation_master:
                 score = score/e_numbers
                 categ_score[categ] = score           
             return categ_score
-
         
-        def categoryAnalysis(self,category_distr_file,category_legend):
+
+        def __CommonFailurecategoryScore(self,categs,cat_distr,common_failure_csv):
+            """! Calculate the score for each category 
+                @note You need to load the excel to analyze first
+                @param categs: dictionary of caategory 
+                @param cat_distr: category distribution file
+                @return categ_score: dictionary of scores
+            """
+            categ_score = dict()
+            for categ in categs:
+                categ_fail = 0
+                for i in range(0,len(common_failure_csv)):
+                    if(str(cat_distr[int(common_failure_csv["Righe"][i])]) == categ):
+                        categ_fail += int(common_failure_csv["FAIL_TIME"][i])
+                categ_score[categ] = categ_fail           
+            return categ_score
+        
+        def categoryAnalysis(self):
             """! Driver for category analysis 
                 @note You need to load the excel to analyze first
-                @param category_distr_file
-                @param category_legend
+                @param None
                 @return score_dict,cat_dict
             """
-            cat_dict = self.__createCategDict(category_legend)
-            cat_distr = self.__getCategDistr(category_distr_file)
+            cat_dict = self.__createCategDict(self.config_p["DEFAULT"]["category_legend"])
+            cat_distr = self.__getCategDistr(self.config_p["DEFAULT"]["category_path"])
             score_dict = self.__categoryScore(cat_dict.keys(),cat_distr)
             return score_dict,cat_dict
         
-        def categoryTimeAnalysis(self,category_distr_file,category_legend,tim_file_path):
+        def categoryTimeAnalysis(self,tim_file_path):
             """! Driver for category Time analysis 
                 @note You need to load the excel to analyze first
-                @param category_distr_file
-                @param category_legend
                 @param tim_file_path
                 @return max_elab_time_ms,row_categ : maximum elaboration time and a dictionary with the correspondence
             """
-            cat_dict = self.__createCategDict(category_legend)
-            cat_distr = self.__getCategDistr(category_distr_file)
+            cat_dict = self.__createCategDict(self.config_p["DEFAULT"]["category_legend"])
+            cat_distr = self.__getCategDistr(self.config_p["DEFAULT"]["category_path"])
             df = pd.read_csv(tim_file_path, header=None, names=['Righe', 'Time'], quotechar='"')
             times = [self.__time_to_ms(time) for time in df["Time"]]
             df["Time"] = times
@@ -229,7 +242,21 @@ class Evaluation_master:
                     if(df["HUMAN_E"][i] == 0):
                         failure_array[i] += 1
             return failure_array
-                
+        
+        def commonFailureAnalysis_category(self,f_p):
+            """! Makes analysis on common models failure gruping by category
+                @Note you need to generate the common failure csv
+                @param f_p: path to failure csv file
+                @return category_failure_array_count
+                @return cat_dict
+            """
+            cat_dict = self.__createCategDict(self.config_p["DEFAULT"]["category_legend"])
+            cat_distr = self.__getCategDistr(self.config_p["DEFAULT"]["category_path"])
+            common_failure_csv_file = pd.read_csv(f_p, header=None, names=['Righe', 'FAIL_TIME'], quotechar='"').drop(0)
+            common_failure_csv_file.reset_index(drop=True, inplace=True)
+            common_failure_dict = self.__CommonFailurecategoryScore(cat_dict,cat_distr,common_failure_csv_file)
+            return common_failure_dict,cat_dict
+
         def globalCorrelation(self,gdf,metric):
             """! Makes the global correlation analysis with the metric with Kendall, Spearman,pearson
                 @param Metric: the name of the metric into the xlsx

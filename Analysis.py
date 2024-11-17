@@ -131,11 +131,7 @@ def categ_analysis():
         @param None
         @return None
     """
-    print("Insert Test in category distribution file path")
-    categ_distr_path = input()
-    print("Insert Category legend file path")
-    categ_legend_path = input()
-    score_dict,cat_dict = evaluation_master.categoryAnalysis(categ_distr_path,categ_legend_path)    
+    score_dict,cat_dict = evaluation_master.categoryAnalysis()    
     for score in score_dict.keys():
         print(f"{cat_dict[score]} : {score_dict[score]} ")
 
@@ -144,13 +140,8 @@ def time_categ_analysis():
         @param None
         @return None
     """
-    print("Insert Test in category distribution file path")
-    categ_distr_path = input()
-    print("Insert Category legend file path")
-    categ_legend_path = input()
-    print("Insert Time file")
     time_file_path = input()
-    max_time_ms,row_categ = evaluation_master.categoryTimeAnalysis(categ_distr_path,categ_legend_path,time_file_path)
+    max_time_ms,row_categ = evaluation_master.categoryTimeAnalysis(time_file_path)
     print(f"Max time {max_time_ms} for: ")
     for row in row_categ:
         print(f"{row[0]} : {row[1]}")
@@ -214,17 +205,32 @@ def commonFailure():
         writer.writerow(['Index','Failures'])
         writer.writerows(not_zero_values)
     print("Saving plot...")
-    print("Plotting top 15 common failure...")
+    print("Plotting top 20 common failure...")
     print("Saving plot")
-    plot_common_f(indexes[0:14],values[0:14])
+    plot_common_f(indexes[0:19],values[0:19],"Common_failures","Row","Number of failure","Common Failuers",None)
 
-def plot_common_f(indices,values):
-    plt.bar(indices, values, color='skyblue', edgecolor='black')
+def commonFailureCateg():
+    print("Insert th path to common failure csv file")
+    fp = input()
+    common_failure_dict,cat_dict = evaluation_master.commonFailureAnalysis_category(fp)
+    plot_common_f(cat_dict.values(),common_failure_dict.values(),"Common_failures_categ","Failures","Category","Common Failuers Category",'h')
+
+def plot_common_f(indices,values,name,xlable_n,y_label_n,h_title,h_type=None):
+    """! Utility to plot histograms
+        @param indices,values,name
+        @param h_type: histogram type h for horizontal otherwise is standard
+        @return None
+    """
+    plt.figure(figsize=(30, 15))
+    if(h_type == 'h'):
+        plt.barh(indices, values, color='skyblue', edgecolor='black',color='salmon')
+    else:
+        plt.bar(indices, values, color='skyblue', edgecolor='black',color='salmon')
     plt.xticks(rotation=45)
-    plt.title("Common Failuers")
-    plt.xlabel("Row")
-    plt.ylabel("Number of failure")
-    plt.savefig("Common_Failuers.png")
+    plt.title(h_title)
+    plt.xlabel(xlable_n)
+    plt.ylabel(y_label_n)
+    plt.savefig(name+".png")
 
 def default():
     exit()
@@ -242,6 +248,7 @@ def statisticsMenu():
     print("8. Time analysis for category")
     print("9. Global correlation analysis")
     print("10. Common Failure analysis")
+    print("11. Common Failure analysis (Category)")
     print("Other. Exit")
     choice = int(input())
     switch_statistics.get(choice,default)()
@@ -257,7 +264,8 @@ switch_statistics = {
     7: categ_analysis,
     8: time_categ_analysis,
     9: globalCorrelation,
-    10: commonFailure
+    10: commonFailure,
+    11: commonFailureCateg
 }
 
 
