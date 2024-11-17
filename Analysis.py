@@ -156,8 +156,9 @@ def commonFailure():
     f_p = input()
     failure_array = evaluation_master.commonFailureAnalysis(f_p)
     not_zero_values = [(index, value) for index, value in enumerate(failure_array) if value != 0]
-    indexes = [str(index) for index, value in not_zero_values if value > 2]
-    values = [value for index, value in not_zero_values if value > 2]
+    ordered_not_zero_values =sorted(not_zero_values, key=lambda x: x[1],reverse=True) 
+    indexes = [str(index) for index, value in ordered_not_zero_values]
+    values = [value for index, value in ordered_not_zero_values]
     print("Writing file csv ....")
     with open("Common_failure.csv",mode=
               'w',newline='') as file:
@@ -165,10 +166,12 @@ def commonFailure():
         writer.writerow(['Index','Failures'])
         writer.writerows(not_zero_values)
     print("Saving plot...")
-    plot_common_f(indexes,values)
+    print("Plotting top 15 common failure...")
+    print("Saving plot")
+    plot_common_f(indexes[0:14],values[0:14])
 
 def plot_common_f(indices,values):
-    plt.bar(indices, values, color='skyblue',width=0.7, edgecolor='black')
+    plt.bar(indices, values, color='skyblue', edgecolor='black')
     plt.xticks(rotation=45)
     plt.title("Common Failuers")
     plt.xlabel("Row")
