@@ -12,5 +12,4 @@ sacrebleu
 rouge
 openpyxl
 configparser
-csv
 matplotlib

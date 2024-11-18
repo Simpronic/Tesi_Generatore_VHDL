@@ -105,6 +105,14 @@ def he_impact():
     print(f"Number of records: {number_of_records}")
     print(f"Human evaluation statistics: ones: {h_e_number_of_ones} zeros: {number_of_records-h_e_number_of_ones}")
     print(f"Human evaluation impact: ones_before: {number_one_before} ones_after: {h_e_number_of_ones} human evaluation impact: {h_e_number_of_ones-number_one_before}")
+    metric_statistics = evaluation_master.getMetricsStatistics()
+    partial_sum = 0
+    metrics = config.get("STATISTICS","metrics_name").split(",")
+    for metric in metrics:
+        partial_sum+=float(metric_statistics[metric][0])
+    avg = partial_sum/len(metrics)
+    he_accuracy = evaluation_master.model_accuracy_HE()
+    print(f" metrics average: {avg} he accuracy: {he_accuracy} residual: {avg-he_accuracy} absolute Residual: {abs(avg-he_accuracy)}")
 
 def metrics_statistics():
     """! Driver for metric statistics analysis
@@ -223,9 +231,9 @@ def plot_common_f(indices,values,name,xlable_n,y_label_n,h_title,h_type=None):
     """
     plt.figure(figsize=(30, 15))
     if(h_type == 'h'):
-        plt.barh(indices, values, color='skyblue', edgecolor='black',color='salmon')
+        plt.barh(indices, values, edgecolor='black',color='salmon')
     else:
-        plt.bar(indices, values, color='skyblue', edgecolor='black',color='salmon')
+        plt.bar(indices, values, edgecolor='black',color='salmon')
     plt.xticks(rotation=45)
     plt.title(h_title)
     plt.xlabel(xlable_n)
