@@ -25,6 +25,7 @@ evaluation_master = Evaluation_master(None,None,None,None)
 current_excel_analysis = None
 evaluation_t_file_path = None
 f_p = None
+xlsx_f_p = None
 failure_file_p = "Common_failure.csv"
 config = configparser.ConfigParser()
 txt_namefile = None
@@ -56,10 +57,12 @@ def evaluationTimeAnalysis():
     """
     global evaluation_t_file_path
     rows,max_elab_time_ms,max_elab_time,avg_time_ms,c_i,avg_time,total_evaluation_time = evaluation_master.evaluationTimeAnalysis(evaluation_t_file_path)
-    for row in rows:
-        print(f"Max Time: {max_elab_time_ms} ms ({max_elab_time}  ore:minuti:secondi:millisecondi) for {row} rows")
-    print(f"AVG time for entry: {avg_time_ms} ms C.I 95%:{c_i};({avg_time}  ore:minuti:secondi:millisecondi)")
-    print(f"Total evaluation time for model: {total_evaluation_time}")
+    with open(txt_namefile, 'a') as file:
+        for row in rows:
+            file.write(f"Max Time: {max_elab_time_ms} ms ({max_elab_time}  ore:minuti:secondi:millisecondi) for {row} rows\n")
+        
+        file.write(f"AVG time for entry: {avg_time_ms} ms C.I 95%:{c_i};({avg_time}  ore:minuti:secondi:millisecondi) \n")
+        file.write(f"Total evaluation time for model: {total_evaluation_time} \n")
 
     
 def correlationAnalysis():
@@ -68,19 +71,20 @@ def correlationAnalysis():
         @return None
     """
     metrics = config.get("STATISTICS","metrics_name").split(",")
-    for metric in metrics:
-        kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value = evaluation_master.correlationAnalysis(metric)
+    with open(txt_namefile, 'a') as file:
+        for metric in metrics:
+            kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value = evaluation_master.correlationAnalysis(metric)
 
-        print("Spearman Correlation:", spearman_corr)
-        print("Spearman P-value:", spearman_p_value)
+            file.write(f"Spearman Correlation: {spearman_corr}\n")
+            file.write(f"Spearman P-value: {spearman_p_value}\n")
 
-        print("Kendall Correlation:", kendall_corr)
-        print("Kendall P-value:", kendall_p_value)
+            file.write(f"Kendall Correlation: {kendall_corr}\n")
+            file.write(f"Kendall P-value: {kendall_p_value}\n")
 
-        print("Pearson Correlation:", pearson_corr)
-        print("Pearson P-value:", pearson_p_value)
+            file.write(f"Pearson Correlation: {pearson_corr} \n")
+            file.write(f"Pearson P-value: {pearson_p_value}\n")
 
-    print("\n\n")
+            file.write("\n")
 
 def he_impact():
     """! Driver for he impact analysis
@@ -88,17 +92,18 @@ def he_impact():
         @return None
     """
     h_e_number_of_ones,number_of_records,number_one_before = evaluation_master.getHEImpact()
-    print(f"Number of records: {number_of_records}")
-    print(f"Human evaluation statistics: ones: {h_e_number_of_ones} zeros: {number_of_records-h_e_number_of_ones}")
-    print(f"Human evaluation impact: ones_before: {number_one_before} ones_after: {h_e_number_of_ones} human evaluation impact: {h_e_number_of_ones-number_one_before}")
-    metric_statistics = evaluation_master.getMetricsStatistics()
-    partial_sum = 0
-    metrics = config.get("STATISTICS","metrics_name").split(",")
-    for metric in metrics:
-        partial_sum+=float(metric_statistics[metric][0])
-    avg = partial_sum/len(metrics)
-    he_accuracy = evaluation_master.model_accuracy_HE()
-    print(f" metrics average: {avg} he accuracy: {he_accuracy} residual: {avg-he_accuracy} absolute Residual: {abs(avg-he_accuracy)}")
+    with open(txt_namefile, 'a') as file:
+        file.write(f"Number of records: {number_of_records}\n")
+        file.write(f"Human evaluation statistics: ones: {h_e_number_of_ones} zeros: {number_of_records-h_e_number_of_ones}\n")
+        file.write(f"Human evaluation impact: ones_before: {number_one_before} ones_after: {h_e_number_of_ones} human evaluation impact: {h_e_number_of_ones-number_one_before}\n")
+        metric_statistics = evaluation_master.getMetricsStatistics()
+        partial_sum = 0
+        metrics = config.get("STATISTICS","metrics_name").split(",")
+        for metric in metrics:
+            partial_sum+=float(metric_statistics[metric][0])
+        avg = partial_sum/len(metrics)
+        he_accuracy = evaluation_master.model_accuracy_HE()
+        file.write(f" metrics average: {avg} he accuracy: {he_accuracy} residual: {avg-he_accuracy} absolute Residual: {abs(avg-he_accuracy)}\n")
 
 def metrics_statistics():
     """! Driver for metric statistics analysis
@@ -106,11 +111,12 @@ def metrics_statistics():
         @return None
     """
     metric_dict = evaluation_master.getMetricsStatistics()
-    for key in metric_dict.keys():
-       print(f"For metric {key}: \n")
-       print(f"mean: {metric_dict[key][0]}")
-       print(f"std: {metric_dict[key][1]}")
-       print(f"median: {metric_dict[key][2]} \n")
+    with open(txt_namefile, 'a') as file:
+        for key in metric_dict.keys():
+            file.write(f"For metric {key}: \n")
+            file.write(f"mean: {metric_dict[key][0]}\n")
+            file.write(f"std: {metric_dict[key][1]}\n")
+            file.write(f"median: {metric_dict[key][2]} \n")
        
 
 def model_acc():
@@ -118,16 +124,19 @@ def model_acc():
         @param None
         @return None
     """
-    print(f"pre_HE: {evaluation_master.model_accuracy_pre_HE()} post HE: {evaluation_master.model_accuracy_HE()}")
+    with open(txt_namefile, 'a') as file:
+        file.write(f"pre_HE: {evaluation_master.model_accuracy_pre_HE()} post HE: {evaluation_master.model_accuracy_HE()} \n")
 
 def categ_analysis():
     """! Driver for category analysis
         @param None
         @return None
     """
-    score_dict,cat_dict = evaluation_master.categoryAnalysis()    
-    for score in score_dict.keys():
-        print(f"{cat_dict[score]} : {score_dict[score]} ")
+    score_dict,cat_dict = evaluation_master.categoryAnalysis() 
+    with open(txt_namefile, 'a') as file:   
+        for score in score_dict.keys():
+            file.write(f"{cat_dict[score]} : {score_dict[score]}\n")
+        file.write("\n")
 
 def time_categ_analysis():
     """! Driver for category time analysis
@@ -136,9 +145,11 @@ def time_categ_analysis():
     """
     global evaluation_t_file_path
     max_time_ms,row_categ = evaluation_master.categoryTimeAnalysis(evaluation_t_file_path)
-    print(f"Max time {max_time_ms} for: ")
-    for row in row_categ:
-        print(f"{row[0]} : {row[1]}")
+    with open(txt_namefile, 'a') as file:  
+        file.write(f"Max time {max_time_ms} for: ")
+        for row in row_categ:
+            file.write(f"{row[0]} : {row[1]}")
+        file.write("\n")
 
 def createglobaldf(f_p):
     """! Driver for creating a big dataframe to perform global correlation analysis
@@ -164,26 +175,27 @@ def globalCorrelation():
     global f_p
     g_df = createglobaldf(f_p)
     metrics = config.get("STATISTICS","metrics_name").split(",")
-    for metric in metrics:
-        kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value = evaluation_master.globalCorrelation(g_df,metric)
-        print("Spearman Correlation:", spearman_corr)
-        print("Spearman P-value:", spearman_p_value)
+    with open(txt_namefile, 'a') as file:  
+        for metric in metrics:
+            kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value = evaluation_master.globalCorrelation(g_df,metric)
+            file.write(f"Spearman Correlation: {spearman_corr}\n")
+            file.write(f"Spearman P-value: {spearman_p_value}\n")
 
-        print("Kendall Correlation:", kendall_corr)
-        print("Kendall P-value:", kendall_p_value)
+            file.write(f"Kendall Correlation: {kendall_corr}\n")
+            file.write(f"Kendall P-value: {kendall_p_value}\n")
 
-        print("Pearson Correlation:", pearson_corr)
-        print("Pearson P-value:", pearson_p_value)
+            file.write(f"Pearson Correlation: {pearson_corr}\n")
+            file.write(f"Pearson P-value: {pearson_p_value}\n")
 
-        print("\n\n")
-    
+            file.write("\n")
+        
 def commonFailure():
     """! Driver for common failure analysis
         @param None
         @return None
     """
-    global f_p
-    failure_array = evaluation_master.commonFailureAnalysis(f_p)
+    global xlsx_f_p
+    failure_array = evaluation_master.commonFailureAnalysis(xlsx_f_p)
     not_zero_values = [(index, value) for index, value in enumerate(failure_array) if value != 0]
     ordered_not_zero_values =sorted(not_zero_values, key=lambda x: x[1],reverse=True) 
     indexes = [str(index) for index, value in ordered_not_zero_values]
@@ -226,13 +238,20 @@ if __name__ == "__main__":
     loadStatisticsExcel()
     print("Insert evaluation time file path")
     evaluation_t_file_path = input()
-    txt_namefile = evaluation_t_file_path+"_Full_Analysis.txt"
+    txt_namefile = os.path.basename(current_excel_analysis).split(".")[0]+"_Full_Analysis.txt"
     print("To perform global correlation put all the xlsx file in one folder and then enter the folder path\n")
     print("Folder path: ")
     f_p = input()
+    print("Insert the path of the folder where the xlsx file are located")
+    xlsx_f_p = input()
+    with open(txt_namefile, 'w'):
+        pass  # Non esegue alcuna operazione, ma crea il file
     correlationAnalysis()
     he_impact()
     metrics_statistics()
     evaluationTimeAnalysis()
+    categ_analysis()
+    commonFailure()
+    commonFailureCateg()
 
 
