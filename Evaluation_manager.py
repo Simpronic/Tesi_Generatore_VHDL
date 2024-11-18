@@ -9,10 +9,6 @@ import scipy.stats as st
 import numpy as np
 import configparser
 
-#REQUEST_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Results\Closed-source-models\Testset\vhdl-test.in"
-#REFS_PATH = r"C:\Users\marcd\Desktop\Tesi\Dati\OneDrive_1_04-10-2024\Results\Closed-source-models\Testset\vhdl-test.out"
-
-
 
 class Evaluation_master:
         """! The Evaluation_master class.
