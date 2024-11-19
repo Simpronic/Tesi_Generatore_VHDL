@@ -1,94 +1,104 @@
-STATISTICHE DI VALUTAZIONE 
+Spearman Correlation: 0.4103259033241449
+Spearman P-value: 1.1370054466338563e-14
+Kendall Correlation: 0.4103259033241449
+Kendall P-value: 1.3902797746945395e-13
+Pearson Correlation: 0.4103259033241448 
+Pearson P-value: 1.1370054466338928e-14
 
-Tempo medio per entry: 44373 ms (0:44:37 minuti:secondi:millisecondi)
-Tempo massimo per 5 entry: 414042 ms (6:54:42 minuti:secondi:millisecondi) 
-Righe relative al tempo massiimo: 271,272,273,274,275
-Human evaluation impact: ones_before: 165 ones_after: human evaluation impact: 
-Accuracy pre_HE: 0.5061349693251533 post HE: 
+Spearman Correlation: 0.5328749105027268
+Spearman P-value: 2.610209848739285e-25
+Kendall Correlation: 0.47117176813065864
+Kendall P-value: 7.502852570059268e-22
+Pearson Correlation: 0.5378580047441773 
+Pearson P-value: 7.700200302820546e-26
 
-ANALISI Di CORRELAZIONE
+Spearman Correlation: 0.5286739637619914
+Spearman P-value: 7.19210169581393e-25
+Kendall Correlation: 0.43584903653707524
+Kendall P-value: 1.5606763210482244e-21
+Pearson Correlation: 0.6276328743363782 
+Pearson P-value: 4.131443463539242e-37
 
-Correlazione con EM_M
-Spearman Correlation: 0.4364495566365208
-Spearman P-value: 1.3585133864772202e-16
-Kendall Correlation: 0.43644955663652074
-Kendall P-value: 3.597620420560421e-15
-Pearson Correlation: 0.43644955663652063
-Pearson P-value: 1.358513386477298e-16
+Spearman Correlation: 0.5363373648006757
+Spearman P-value: 1.1200142927967178e-25
+Kendall Correlation: 0.47422732933215983
+Kendall P-value: 4.085107676122419e-22
+Pearson Correlation: 0.5395229767835998 
+Pearson P-value: 5.097846606966726e-26
 
+Spearman Correlation: 0.4920729968113512
+Spearman P-value: 2.7799094863443178e-21
+Kendall Correlation: 0.44273814754608554
+Kendall P-value: 7.251011674329245e-19
+Pearson Correlation: 0.4856175100672101 
+Pearson P-value: 1.0792424186879203e-20
 
+Spearman Correlation: 0.5302339680457268
+Spearman P-value: 4.944396288158225e-25
+Kendall Correlation: 0.4809385270575892
+Kendall P-value: 1.1898179605244723e-21
+Pearson Correlation: 0.4457938510030224 
+Pearson P-value: 2.5349675224430177e-17
 
-Correlazione con ED_M
-Spearman Correlation: 0.6305263765357484
-Spearman P-value: 1.5497396933622763e-37
-Kendall Correlation: 0.5499585620712917
-Kendall P-value: 6.1066808412991614e-30
-Pearson Correlation: 0.7081271208531268
-Pearson P-value: 6.676722377672604e-51
+Spearman Correlation: 0.4647301323724431
+Spearman P-value: 7.177102835784186e-19
+Kendall Correlation: 0.4110415415017364
+Kendall P-value: 5.381562222077791e-17
+Pearson Correlation: 0.4173866976131462 
+Pearson P-value: 3.568038931548235e-15
 
-
-
-Correlazione con METEOR_M
-Spearman Correlation: 0.6303128924143324
-Spearman P-value: 1.6666007692649052e-37
-Kendall Correlation: 0.5192297675845867
-Kendall P-value: 6.381843258201043e-30
-Pearson Correlation: 0.7698992189814655
-Pearson P-value: 3.6089605193743316e-65
-
-
-Analizyng LCS_M...
-Spearman Correlation: 0.6309617926740679
-Spearman P-value: 1.3359410668844514e-37
-Kendall Correlation: 0.5503447293138786
-Kendall P-value: 5.58143888337334e-30
-Pearson Correlation: 0.7027673048038793
-Pearson P-value: 7.708521762434462e-50
-
-Analizyng CRYSTALB_M...
-Spearman Correlation: 0.6159117832995042
-Spearman P-value: 1.977603257087343e-35
-Kendall Correlation: 0.5480640554580809
-Kendall P-value: 1.2061543379188338e-28
-Pearson Correlation: 0.6501542029298852
-Pearson P-value: 1.5083706853170988e-40
-
-
-Analizyng SACREB_M...
-Spearman Correlation: 0.499381642300424
-Spearman P-value: 5.778959927197006e-22
-Kendall Correlation: 0.44848602230277834
-Kendall P-value: 2.201721461652541e-19
-Pearson Correlation: 0.38991236909053345
-Pearson P-value: 2.790799668933066e-13
-
-Analizyng ROUGE_M...
-Spearman Correlation: 0.5701254229554547
-Spearman P-value: 1.699681371997298e-29
-Kendall Correlation: 0.49776546568363333
-Kendall P-value: 8.847041720560048e-25
-Pearson Correlation: 0.58533447208309
-Pearson P-value: 2.307066009709149e-31
-
-ANALISI PER CATEGORIA
-
+Number of records: 326
+Human evaluation statistics: ones: 280 zeros: 46
+Human evaluation impact: ones_before: 165 ones_after: 280 human evaluation impact: 115
+ metrics average: 0.812298597872142 he accuracy: 0.8588957055214724 residual: -0.04659710764933045 absolute Residual: 0.04659710764933045
+For metric EM_M: 
+mean: 0.5061349693251533
+std: 0.5007309428344181
+median: 1.0 
+For metric ED_M: 
+mean: 0.869813716800367
+std: 0.2085388165827742
+median: 1.0 
+For metric METEOR_M: 
+mean: 0.8797752695490189
+std: 0.21324908946813292
+median: 0.9980014019843471 
+For metric LCS_M: 
+mean: 0.8803802672901414
+std: 0.1966383674379476
+median: 1.0 
+For metric CRYSTALB_M: 
+mean: 0.7519938650306749
+std: 0.35712098354104493
+median: 1.0 
+For metric SACREB_M: 
+mean: 0.9355960122699388
+std: 0.13544185337475098
+median: 1.0 
+For metric ROUGE_M: 
+mean: 0.8623960848396991
+std: 0.1997142111474726
+median: 0.999999995 
+Max Time: 315039 ms (0:5:15:39  ore:minuti:secondi:millisecondi) for 256,257,258,259,260 rows
+AVG time for entry: 34062.05625 ms C.I 95%:[38999.97731744949,29124.135182550515];(0:0:34:62  ore:minuti:secondi:millisecondi) 
+Total evaluation time for model: 1:31:23:991 
 library import : 0.75
 entity definition with generic : 0.5
-entity definition without generic : 0.875
-process : 0.5
+entity definition without generic : 1.0
+process : 1.0
 after assignment : 1.0
-signal definition : 0.9459459459459459
+signal definition : 1.0
 enumerative data type : 1.0
-if statement condition : 0.9
+if statement condition : 1.0
 signal assignment : 1.0
-conditional assignment : 0.875
+conditional assignment : 1.0
 case statement : 0.875
-increment/decrement of variables/signals : 1.0
+increment/decrement of variables/signals : 0.75
 architecture definition : 1.0
 component definition : 1.0
-component instantiation : 0.9
+component instantiation : 1.0
 wait instructions : 1.0
-complex process : 0.9090909090909091
+complex process : 1.0
 signal definition for interfaces : 1.0
 constant definition : 1.0
 for generate construct : 0.6666666666666666
@@ -96,20 +106,11 @@ array definition : 1.0
 element array assignment : 1.0
 generic definition : 1.0
 memory indexing : 0.8333333333333334
-selected signal assignment : 1.0
-assertion statement : 0.16666666666666666
-complex component definition : 0.5
-variable definition and assignment : 1.0
+selected signal assignment : 0.7142857142857143
+assertion statement : 0.5
+complex component definition : 0.8333333333333334
+variable definition and assignment : 0.75
 shift operation : 1.0
-concatenate : 0.8235294117647058
-high-level comments : 0.41509433962264153
-
-Max time 414042 for:
-271 : high-level comments
-272 : high-level comments
-273 : high-level comments
-274 : high-level comments
-275 : high-level comments
-
-EVENTUALI PROBLEMI
+concatenate : 0.8627450980392157
+high-level comments : 0.5283018867924528
 
