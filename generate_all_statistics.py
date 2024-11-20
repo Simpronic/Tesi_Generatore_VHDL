@@ -250,7 +250,10 @@ if __name__ == "__main__":
     he_impact()
     metrics_statistics()
     evaluationTimeAnalysis()
+    model_acc()
     categ_analysis()
+    time_categ_analysis()
+    globalCorrelation()
     commonFailure()
     commonFailureCateg()
 
