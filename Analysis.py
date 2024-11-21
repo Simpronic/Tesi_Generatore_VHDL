@@ -243,6 +243,8 @@ def plot_common_f(indices,values,name,xlable_n,y_label_n,h_title,h_type=None):
 def default():
     exit()
 
+def TestSetDistribution():
+    print("Work in progress")
 
 def statisticsMenu():
     print("Which statistics would you like to perform ? \n\n")
@@ -257,6 +259,7 @@ def statisticsMenu():
     print("9. Global correlation analysis")
     print("10. Common Failure analysis")
     print("11. Common Failure analysis (Category)")
+    print("12. Test set Category distribution")
     print("Other. Exit")
     choice = int(input())
     switch_statistics.get(choice,default)()
@@ -273,7 +276,8 @@ switch_statistics = {
     8: time_categ_analysis,
     9: globalCorrelation,
     10: commonFailure,
-    11: commonFailureCateg
+    11: commonFailureCateg,
+    12: TestSetDistribution
 }
 
 

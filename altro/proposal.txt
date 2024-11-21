@@ -1,0 +1,12 @@
+'''
+    def rom_phenomenaAnalisis(self):
+            """! Let you analyze the random occurrence of ROM Blocks
+                @note You need to load the excel to analyze first
+                @param None
+                @return None
+            """
+            filtro =  self.excel_to_analyze[self.excel_to_analyze["HYPS"].str.contains('ROM|RAM', case=False, na=False)]
+            filtro = filtro[~filtro["IN"].str.contains('ROM|RAM', case=False, na=False)]
+            print(f"Entry with random ROM block: ")
+            print(len(filtro["HYPS"]))
+'''
