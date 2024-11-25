@@ -24,7 +24,8 @@ import configparser
 import os
 import csv
 import matplotlib.pyplot as plt
-from utility_plots import plt_residual,plt_categ_distribution,plt_common_failure
+from utility_plots import plt_residual,plt_categ_distribution,plt_commonFailure,plt_modelEvaluationDifficoultCategory,createCategDict
+import glob
 
 evaluation_master = Evaluation_master(None,None,None,None)
 current_excel_analysis = None
@@ -76,7 +77,7 @@ def evaluationTimeAnalysis():
     print(f"AVG time for entry: {avg_time_ms} ms C.I 95%:{c_i};({avg_time}  ore:minuti:secondi:millisecondi)")
     print(f"Total evaluation time for model: {total_evaluation_time}")
 
-    
+
 def correlationAnalysis():
     """! Driver for Correlation analysis
         @param None
@@ -205,8 +206,8 @@ def commonFailure():
     failure_array = evaluation_master.commonFailureAnalysis(f_p)
     not_zero_values = [(index, value) for index, value in enumerate(failure_array) if value != 0]
     ordered_not_zero_values =sorted(not_zero_values, key=lambda x: x[1],reverse=True) 
-    indexes = [str(index) for index, value in ordered_not_zero_values]
-    values = [value for index, value in ordered_not_zero_values]
+    indexes = [str(index) for index, _ in ordered_not_zero_values]
+    values = [value for _, value in ordered_not_zero_values]
     print("Writing file csv ....")
     with open(config.get("DEFAULT","output_folder")+"Common_failure.csv",mode=
               'w',newline='') as file:
@@ -216,15 +217,32 @@ def commonFailure():
     print("Saving plot...")
     print("Plotting top 20 common failure...")
     print("Saving plot")
-    plt_common_failure(indexes[0:19],values[0:19],"Common_failures","Row","Number of failure","Common Failuers",config.get("DEFAULT","output_folder"),None)
+    plt_commonFailure(indexes[0:19],values[0:19],"Common_failures","Row","Number of failure","Common Failuers",config.get("DEFAULT","output_folder"),None)
 
 def commonFailureCateg():
     print("Insert th path to common failure csv file")
     fp = input()
     common_failure_dict,cat_dict = evaluation_master.commonFailureAnalysis_category(fp)
-    plt_common_failure(cat_dict.values(),common_failure_dict.values(),"Common_failures_categ","Failures","Category","Common Failuers Category",config.get("DEFAULT","output_folder"),'h')
+    plt_commonFailure(cat_dict.values(),common_failure_dict.values(),"Common_failures_categ","Failures","Category","Common Failuers Category",config.get("DEFAULT","output_folder"),'h')
 
 
+def modelEvalDiffCateg_plot():
+    print("Insert folder were Analysis files are located")
+    f_p = input()
+    files =  [file for file in os.listdir(f_p) if file.endswith(".csv")]
+    cat_dict = createCategDict(config.get("DEFAULT","category_legend"))
+    names = []
+    values = []
+    top_categs = pd.read_csv(f_p+"/"+files[0],header=0)['Category_number']
+    category_names = {key: cat_dict[str(key)] for key in top_categs if str(key) in cat_dict}
+    for file in files:
+        modelName = file.split(".")[0]
+        modelName = modelName.split("_")[1]
+        modelName = modelName.replace("Analisi", "")
+        names.append(modelName)
+        model_score = pd.read_csv(f_p+"/"+file,header=0)['accuracy']
+        values.append(model_score)
+    plt_modelEvaluationDifficoultCategory(np.array([str(value) for value in category_names.values()]),values,names,config.get("DEFAULT","output_folder"))
 
 def res_plot():
     #TO MODIFY...
@@ -242,6 +260,22 @@ def TestSetDistribution():
     name = input()
     evaluation_master.category_distribution(name)
 
+def ModelEvalDiffiCateg():
+    diff_dic = evaluation_master.calculateCategoriesDifficulty()
+    top_5_diff_categ = dict(sorted(diff_dic.items(), key=lambda item: item[1],reverse=True))
+    top_5_diff_categ = dict(list(top_5_diff_categ.items())[:5])
+    score_dict,_ = evaluation_master.categoryAnalysis()
+    common_key = sorted(set(top_5_diff_categ.keys()) & set(score_dict.keys()))
+    model_acc_for_diff_categ = dict()
+    
+    for key in common_key:
+        model_acc_for_diff_categ[key] = score_dict[key]
+    with open(config.get("DEFAULT","output_folder")+"DifficultCategory_"+current_excel_analysis.split(".")[0]+".csv", mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Category_number', 'accuracy'])
+        for chiave, valore in model_acc_for_diff_categ.items():
+            writer.writerow([chiave, valore])
+
 def statisticsMenu():
     print("Which statistics would you like to perform ? \n\n")
     print("0. Go back")
@@ -256,6 +290,7 @@ def statisticsMenu():
     print("9. Global correlation analysis")
     print("10. Common Failure analysis")
     print("11. Common Failure analysis (Category)")
+    print("12. Model evaluation on difficult category")
     print("Other. Exit")
     choice = int(input())
     switch_statistics.get(choice,default)()
@@ -265,6 +300,7 @@ def plotMenu():
     print("0. Go back")
     print("1. Resisual plot (metric_avg - accuracy_he)")
     print("2. Category distribution")
+    print("3. Models evaluation on difficult categories")
     choice = int(input())
     switch_plot.get(choice,default)()
 
@@ -291,13 +327,15 @@ switch_statistics = {
     8: time_categ_analysis,
     9: globalCorrelation,
     10: commonFailure,
-    11: commonFailureCateg
+    11: commonFailureCateg,
+    12: ModelEvalDiffiCateg
 }
 
 switch_plot = {
     0: menu,
     1: res_plot,
-    2: cat_plot
+    2: cat_plot,
+    3: modelEvalDiffCateg_plot
 }
 
 

@@ -8,7 +8,11 @@ from scipy.stats import spearmanr, kendalltau,pearsonr
 import scipy.stats as st 
 import numpy as np
 import configparser
+import nltk
+import logging
 
+logging.getLogger('nltk').setLevel(logging.ERROR)
+nltk.download('punkt')  # Scarica il dizionario per la tokenizzazione
 
 class Evaluation_master:
         """! The Evaluation_master class.
@@ -35,6 +39,20 @@ class Evaluation_master:
             self.config_p = configparser.ConfigParser()
             self.config_p.read('config.cfg')
 
+        def __countTokens(self,phrase):
+            return len(nltk.word_tokenize(phrase))
+        
+        def __calculateCategoryDifficulty(self,categ_numb):
+            utility_df = self.excel_to_analyze
+            test_in_categ_file = pd.read_excel(self.config_p.get("DEFAULT","category_path"))
+            utility_df["Category"] = test_in_categ_file["Category"]
+            categ_entries = utility_df[utility_df["Category"] == int(categ_numb)]
+            categ_diff = 0
+            for index, entry in categ_entries.iterrows():
+                diff = self.__countTokens(entry["REFS"])/self.__countTokens(entry["IN"])
+                categ_diff += diff
+            return categ_diff/len(categ_entries)
+        
         def __confidence_interval_t_student(self,data):
 
             """! Calculates the confidence interval for data series in relation with t-student distribution.
@@ -214,6 +232,13 @@ class Evaluation_master:
                     row_categ.append([line,categ_name])
             return max_elab_time_ms,row_categ
 
+        def calculateCategoriesDifficulty(self):
+            categories = self.__createCategDict(self.config_p.get("DEFAULT","category_legend")).keys()
+            category_diff = dict()
+            for category in categories:
+                diff = self.__calculateCategoryDifficulty(category)
+                category_diff[category] = diff
+            return category_diff
 
         def clearExcel_to_analyze(self):
             """! Clears the excel 
@@ -337,7 +362,8 @@ class Evaluation_master:
             h_e_number_of_ones = (self.excel_to_analyze["HUMAN_E"] == 1).sum()
             number_one_before = (self.excel_to_analyze["EM_M"] == 1).sum()
             return h_e_number_of_ones,number_of_records,number_one_before
-    
+
+
         
         def getMetricsStatistics(self):
             """! Prints the Other metrics statistics like std. dev, average.

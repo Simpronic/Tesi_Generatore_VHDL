@@ -2,6 +2,24 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+def plt_modelEvaluationDifficoultCategory(cat_names,values,model_names,save_f):
+    bars = []
+    spacing = 1.5
+    x = np.arange(len(cat_names))*spacing
+    width = 0.25
+    fig, ax = plt.subplots(figsize=(27, 16))
+    i = 0
+    for model in model_names:
+       bars = ax.bar(x - width+i*(width), values[i], width, label=model)
+       i += 1
+    ax.set_xlabel('Categories')
+    ax.set_ylabel('Accuracy')
+    ax.set_title('Model Evaluation on difficult category')
+    ax.set_xticks(x)
+    ax.set_xticklabels(cat_names)
+    ax.legend()
+    plt.xticks(rotation=45)
+    plt.savefig(save_f+"ModelEvalDiffCateg"+".png",format="png", dpi=300)
 
 
 def createCategDict(category_legend_path):
@@ -19,7 +37,7 @@ def check(dic):
     sum += dic[element]
   print(sum)
 
-def plt_common_failure(indices,values,name,xlable_n,y_label_n,h_title,save_f,h_type=None):
+def plt_commonFailure(indices,values,name,xlable_n,y_label_n,h_title,save_f,h_type=None):
     """! Utility to plot histograms
         @param indices,values,name,xlable_n,y_label_n,h_title,save_f
         @param h_type: histogram type h for horizontal otherwise is standard
