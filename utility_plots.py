@@ -19,7 +19,22 @@ def check(dic):
     sum += dic[element]
   print(sum)
 
-
+def plt_common_failure(indices,values,name,xlable_n,y_label_n,h_title,save_f,h_type=None):
+    """! Utility to plot histograms
+        @param indices,values,name,xlable_n,y_label_n,h_title,save_f
+        @param h_type: histogram type h for horizontal otherwise is standard
+        @return None
+    """
+    plt.figure(figsize=(30, 15))
+    if(h_type == 'h'):
+        plt.barh(indices, values, edgecolor='black',color='salmon')
+    else:
+        plt.bar(indices, values, edgecolor='black',color='salmon')
+    plt.xticks(rotation=45)
+    plt.title(h_title)
+    plt.xlabel(xlable_n)
+    plt.ylabel(y_label_n)
+    plt.savefig(save_f+name+".png")
 
 def plt_residual(data,save_f,name):
     plt.bar(data.keys(), data.values(), color='salmon', edgecolor='black', width=0.4)

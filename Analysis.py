@@ -24,7 +24,7 @@ import configparser
 import os
 import csv
 import matplotlib.pyplot as plt
-from utility_plots import plt_residual,plt_categ_distribution
+from utility_plots import plt_residual,plt_categ_distribution,plt_common_failure
 
 evaluation_master = Evaluation_master(None,None,None,None)
 current_excel_analysis = None
@@ -216,30 +216,15 @@ def commonFailure():
     print("Saving plot...")
     print("Plotting top 20 common failure...")
     print("Saving plot")
-    plot_common_f(indexes[0:19],values[0:19],"Common_failures","Row","Number of failure","Common Failuers",None)
+    plt_common_failure(indexes[0:19],values[0:19],"Common_failures","Row","Number of failure","Common Failuers",config.get("DEFAULT","output_folder"),None)
 
 def commonFailureCateg():
     print("Insert th path to common failure csv file")
     fp = input()
     common_failure_dict,cat_dict = evaluation_master.commonFailureAnalysis_category(fp)
-    plot_common_f(cat_dict.values(),common_failure_dict.values(),"Common_failures_categ","Failures","Category","Common Failuers Category",'h')
+    plt_common_failure(cat_dict.values(),common_failure_dict.values(),"Common_failures_categ","Failures","Category","Common Failuers Category",config.get("DEFAULT","output_folder"),'h')
 
-def plot_common_f(indices,values,name,xlable_n,y_label_n,h_title,h_type=None):
-    """! Utility to plot histograms
-        @param indices,values,name
-        @param h_type: histogram type h for horizontal otherwise is standard
-        @return None
-    """
-    plt.figure(figsize=(30, 15))
-    if(h_type == 'h'):
-        plt.barh(indices, values, edgecolor='black',color='salmon')
-    else:
-        plt.bar(indices, values, edgecolor='black',color='salmon')
-    plt.xticks(rotation=45)
-    plt.title(h_title)
-    plt.xlabel(xlable_n)
-    plt.ylabel(y_label_n)
-    plt.savefig(config.get("DEFAULT","output_folder")+name+".png")
+
 
 def res_plot():
     #TO MODIFY...
