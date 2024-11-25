@@ -24,6 +24,7 @@ import configparser
 import os
 import csv
 import matplotlib.pyplot as plt
+from utility_plots import plt_residual,plt_categ_distribution
 
 evaluation_master = Evaluation_master(None,None,None,None)
 current_excel_analysis = None
@@ -207,7 +208,7 @@ def commonFailure():
     indexes = [str(index) for index, value in ordered_not_zero_values]
     values = [value for index, value in ordered_not_zero_values]
     print("Writing file csv ....")
-    with open("Common_failure.csv",mode=
+    with open(config.get("DEFAULT","output_folder")+"Common_failure.csv",mode=
               'w',newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['Index','Failures'])
@@ -238,7 +239,15 @@ def plot_common_f(indices,values,name,xlable_n,y_label_n,h_title,h_type=None):
     plt.title(h_title)
     plt.xlabel(xlable_n)
     plt.ylabel(y_label_n)
-    plt.savefig(name+".png")
+    plt.savefig(config.get("DEFAULT","output_folder")+name+".png")
+
+def res_plot():
+    #TO MODIFY...
+    arr = {"CodeGen":-0.09 , "CodeT5_220": 0.02, "CodeT5_770": 0.05, "CodeGPT": -0.12,"ClaudeSonnet": -0.69}
+    plt_residual(arr,config.get("DEFAULT","output_folder"),"ModelsResidualPlot")
+
+def cat_plot():
+    plt_categ_distribution(config.get("DEFAULT","category_path"),config.get("DEFAULT","category_legend"),config.get("DEFAULT","output_folder"),"CategoryDistrPlot")
 
 def default():
     exit()
@@ -250,6 +259,7 @@ def TestSetDistribution():
 
 def statisticsMenu():
     print("Which statistics would you like to perform ? \n\n")
+    print("0. Go back")
     print(f"1. Change excel to analyze actually: {current_excel_analysis}")
     print("2. Correlation analysis analysis with Human evaluation")
     print("3. Get human evaluation impact")
@@ -265,8 +275,27 @@ def statisticsMenu():
     choice = int(input())
     switch_statistics.get(choice,default)()
 
+def plotMenu():
+    print("Which plot would you like to draw ? \n\n")
+    print("0. Go back")
+    print("1. Resisual plot (metric_avg - accuracy_he)")
+    print("2. Category distribution")
+    choice = int(input())
+    switch_plot.get(choice,default)()
+
+def menu():
+    while(1):
+        print("Which operation would you like to do ? \n\n")
+        print("1. Create excel for analysis")
+        print("2. Get Excel Statistics")
+        print("3. TestSet distribution")
+        print("4. Plots")
+        print("Other. Exit")
+        choice = int(input())
+        switch_main_menu.get(choice,default)()
 
 switch_statistics = {
+    0: menu,
     1: loadStatisticsExcel,
     2: correlationAnalysis,
     3: he_impact,
@@ -280,24 +309,19 @@ switch_statistics = {
     11: commonFailureCateg
 }
 
+switch_plot = {
+    0: menu,
+    1: res_plot,
+    2: cat_plot
+}
 
 
 switch_main_menu = {
     1: excelCreation,
     2: statisticsMenu,
-    3: TestSetDistribution
+    3: TestSetDistribution,
+    4: plotMenu
 }
-
-
-def menu():
-    while(1):
-        print("Which operation would you like to do ? \n\n")
-        print("1. Create excel for analysis")
-        print("2. Get Excel Statistics")
-        print("3. TestSet distribution")
-        print("Other. Exit")
-        choice = int(input())
-        switch_main_menu.get(choice,default)()
 
 
 if __name__ == "__main__":

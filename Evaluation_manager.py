@@ -189,8 +189,8 @@ class Evaluation_master:
                 @param None
                 @return score_dict,cat_dict
             """
-            cat_dict = self.__createCategDict(self.config_p["DEFAULT"]["category_legend"])
-            cat_distr = self.__getCategDistr(self.config_p["DEFAULT"]["category_path"])
+            cat_dict = self.__createCategDict(self.config_p.get("DEFAULT","category_legend"))
+            cat_distr = self.__getCategDistr(self.config_p.get("DEFAULT","category_path"))
             score_dict = self.__categoryScore(cat_dict.keys(),cat_distr)
             return score_dict,cat_dict
         
@@ -200,8 +200,8 @@ class Evaluation_master:
                 @param tim_file_path
                 @return max_elab_time_ms,row_categ : maximum elaboration time and a dictionary with the correspondence
             """
-            cat_dict = self.__createCategDict(self.config_p["DEFAULT"]["category_legend"])
-            cat_distr = self.__getCategDistr(self.config_p["DEFAULT"]["category_path"])
+            cat_dict = self.__createCategDict(self.config_p.get("DEFAULT","category_legend"))
+            cat_distr = self.__getCategDistr(self.config_p.get("DEFAULT","category_path"))
             df = pd.read_csv(tim_file_path, header=None, names=['Righe', 'Time'], quotechar='"')
             times = [self.__time_to_ms(time) for time in df["Time"]]
             df["Time"] = times
@@ -246,8 +246,8 @@ class Evaluation_master:
                 @return category_failure_array_count
                 @return cat_dict
             """
-            cat_dict = self.__createCategDict(self.config_p["DEFAULT"]["category_legend"])
-            cat_distr = self.__getCategDistr(self.config_p["DEFAULT"]["category_path"])
+            cat_dict = self.__createCategDict(self.config_p.get("DEFAULT","category_legend"))
+            cat_distr = self.__getCategDistr(self.config_p.get("DEFAULT","category_path"))
             common_failure_csv_file = pd.read_csv(f_p, header=None, names=['Righe', 'FAIL_TIME'], quotechar='"').drop(0)
             common_failure_csv_file.reset_index(drop=True, inplace=True)
             common_failure_dict = self.__CommonFailurecategoryScore(cat_dict,cat_distr,common_failure_csv_file)
@@ -391,7 +391,7 @@ class Evaluation_master:
             df['SACREB_M'] = self.m_m.calc_sacreBLEU()
             df['ROUGE_M'] = self.m_m.calc_rouge(self.model_output_path,self.refs_path)
             df['HUMAN_E'] = df['EM_M']
-            df.to_excel(self.excel_name,index=False)
+            df.to_excel(self.config_p.get("DEFAULT","output_folder")+self.excel_name,index=False)
 
         def category_distribution(self,name):
             input_prompt = []
@@ -425,4 +425,4 @@ class Evaluation_master:
             df_test_in = pd.DataFrame()
             df_test_in["Prompt"] = test_in_data
             df_test_in["Category"] = category_data_for_test
-            df_test_in.to_excel(name+".xlsx",index=False)
+            df_test_in.to_excel(self.config_p.get("DEFAULT","output_folder")+name+".xlsx",index=False)
