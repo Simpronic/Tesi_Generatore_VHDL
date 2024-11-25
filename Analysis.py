@@ -244,7 +244,9 @@ def default():
     exit()
 
 def TestSetDistribution():
-    print("Work in progress")
+    print("Insert the output filename")
+    name = input()
+    evaluation_master.category_distribution(name)
 
 def statisticsMenu():
     print("Which statistics would you like to perform ? \n\n")
@@ -259,7 +261,6 @@ def statisticsMenu():
     print("9. Global correlation analysis")
     print("10. Common Failure analysis")
     print("11. Common Failure analysis (Category)")
-    print("12. Test set Category distribution")
     print("Other. Exit")
     choice = int(input())
     switch_statistics.get(choice,default)()
@@ -276,15 +277,15 @@ switch_statistics = {
     8: time_categ_analysis,
     9: globalCorrelation,
     10: commonFailure,
-    11: commonFailureCateg,
-    12: TestSetDistribution
+    11: commonFailureCateg
 }
 
 
 
 switch_main_menu = {
     1: excelCreation,
-    2: statisticsMenu
+    2: statisticsMenu,
+    3: TestSetDistribution
 }
 
 
@@ -293,6 +294,7 @@ def menu():
         print("Which operation would you like to do ? \n\n")
         print("1. Create excel for analysis")
         print("2. Get Excel Statistics")
+        print("3. TestSet distribution")
         print("Other. Exit")
         choice = int(input())
         switch_main_menu.get(choice,default)()
