@@ -150,6 +150,7 @@ def time_categ_analysis():
         @param None
         @return None
     """
+    print("Insert Time analysis path file")
     time_file_path = input()
     max_time_ms,row_categ = evaluation_master.categoryTimeAnalysis(time_file_path)
     print(f"Max time {max_time_ms} for: ")
@@ -209,7 +210,7 @@ def commonFailure():
     indexes = [str(index) for index, _ in ordered_not_zero_values]
     values = [value for _, value in ordered_not_zero_values]
     print("Writing file csv ....")
-    with open(config.get("DEFAULT","output_folder")+"Common_failure.csv",mode=
+    with open(config.get("OUTPUTS","csv_folder")+"Common_failure.csv",mode=
               'w',newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['Index','Failures'])
@@ -217,13 +218,13 @@ def commonFailure():
     print("Saving plot...")
     print("Plotting top 20 common failure...")
     print("Saving plot")
-    plt_commonFailure(indexes[0:19],values[0:19],"Common_failures","Row","Number of failure","Common Failuers",config.get("DEFAULT","output_folder"),None)
+    plt_commonFailure(indexes[0:19],values[0:19],"Common_failures","Row","Number of failure","Common Failuers",config.get("OUTPUTS","img_folder"),None)
 
 def commonFailureCateg():
     print("Insert th path to common failure csv file")
     fp = input()
     common_failure_dict,cat_dict = evaluation_master.commonFailureAnalysis_category(fp)
-    plt_commonFailure(cat_dict.values(),common_failure_dict.values(),"Common_failures_categ","Failures","Category","Common Failuers Category",config.get("DEFAULT","output_folder"),'h')
+    plt_commonFailure(cat_dict.values(),common_failure_dict.values(),"Common_failures_categ","Failures","Category","Common Failuers Category",config.get("OUTPUTS","img_folder"),'h')
 
 
 def modelEvalDiffCateg_plot():
@@ -242,15 +243,15 @@ def modelEvalDiffCateg_plot():
         names.append(modelName)
         model_score = pd.read_csv(f_p+"/"+file,header=0)['accuracy']
         values.append(model_score)
-    plt_modelEvaluationDifficoultCategory(np.array([str(value) for value in category_names.values()]),values,names,config.get("DEFAULT","output_folder"))
+    plt_modelEvaluationDifficoultCategory(np.array([str(value) for value in category_names.values()]),values,names,config.get("OUTPUTS","img_folder"))
 
 def res_plot():
     #TO MODIFY...
     arr = {"CodeGen":-0.09 , "CodeT5_220": 0.02, "CodeT5_770": 0.05, "CodeGPT": -0.12,"ClaudeSonnet": -0.69}
-    plt_residual(arr,config.get("DEFAULT","output_folder"),"ModelsResidualPlot")
+    plt_residual(arr,config.get("OUTPUTS","img_folder"),"ModelsResidualPlot")
 
 def cat_plot():
-    plt_categ_distribution(config.get("DEFAULT","category_path"),config.get("DEFAULT","category_legend"),config.get("DEFAULT","output_folder"),"CategoryDistrPlot")
+    plt_categ_distribution(config.get("DEFAULT","category_path"),config.get("DEFAULT","category_legend"),config.get("OUTPUTS","img_folder"),"CategoryDistrPlot")
 
 def default():
     exit()
@@ -270,7 +271,7 @@ def ModelEvalDiffiCateg():
     
     for key in common_key:
         model_acc_for_diff_categ[key] = score_dict[key]
-    with open(config.get("DEFAULT","output_folder")+"DifficultCategory_"+current_excel_analysis.split(".")[0]+".csv", mode='w', newline='') as file:
+    with open(config.get("OUTPUTS","csv_folder")+"DifficultCategory_"+current_excel_analysis.split(".")[0]+".csv", mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['Category_number', 'accuracy'])
         for chiave, valore in model_acc_for_diff_categ.items():

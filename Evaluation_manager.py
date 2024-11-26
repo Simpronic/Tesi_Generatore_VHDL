@@ -417,7 +417,7 @@ class Evaluation_master:
             df['SACREB_M'] = self.m_m.calc_sacreBLEU()
             df['ROUGE_M'] = self.m_m.calc_rouge(self.model_output_path,self.refs_path)
             df['HUMAN_E'] = df['EM_M']
-            df.to_excel(self.config_p.get("DEFAULT","output_folder")+self.excel_name,index=False)
+            df.to_excel(self.config_p.get("OUTPUTS","output_folder")+self.excel_name,index=False)
 
         def category_distribution(self,name):
             input_prompt = []
@@ -451,4 +451,4 @@ class Evaluation_master:
             df_test_in = pd.DataFrame()
             df_test_in["Prompt"] = test_in_data
             df_test_in["Category"] = category_data_for_test
-            df_test_in.to_excel(self.config_p.get("DEFAULT","output_folder")+name+".xlsx",index=False)
+            df_test_in.to_excel(self.config_p.get("OUTPUTS","output_folder")+name+".xlsx",index=False)
