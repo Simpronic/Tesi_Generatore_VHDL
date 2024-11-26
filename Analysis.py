@@ -247,7 +247,8 @@ def modelEvalDiffCateg_plot():
 
 def res_plot():
     #TO MODIFY...
-    arr = {"CodeGen":-0.09 , "CodeT5_220": 0.02, "CodeT5_770": 0.05, "CodeGPT": -0.12,"ClaudeSonnet": -0.69}
+    
+    arr = {"CodeGen":-0.09 , "CodeT5_220": 0.02, "CodeT5_770": 0.05, "CodeGPT": -0.12,"ClaudeSonnet": 0.20}
     plt_residual(arr,config.get("OUTPUTS","img_folder"),"ModelsResidualPlot")
 
 def cat_plot():
