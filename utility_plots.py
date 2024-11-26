@@ -1,8 +1,16 @@
+
+"""! @brief Utility functions."""
+
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
 def plt_modelEvaluationDifficoultCategory(cat_names,values,model_names,save_f):
+    """! Utility to plot bar plot for evaluating models on difficoult categories
+        @param cat_names,values,model_names,save_f
+        @return None
+    """
     bars = []
     spacing = 1.5
     x = np.arange(len(cat_names))*spacing
@@ -23,22 +31,21 @@ def plt_modelEvaluationDifficoultCategory(cat_names,values,model_names,save_f):
 
 
 def createCategDict(category_legend_path):
-  categ_dict = dict()
-  with open(category_legend_path, "r") as file:
-      for linea in file:
-          linea = linea.strip()
-          elem = linea.split(",")
-          categ_dict[elem[0].strip()] = elem[1].strip()
-  return categ_dict
+    """! Create a dictionary for identify the category using a number 
+        @param category_legend_path: the path of the legend file
+        @return categ_dict
+    """
+    categ_dict = dict()
+    with open(category_legend_path, "r") as file:
+        for linea in file:
+            linea = linea.strip()
+            elem = linea.split(",")
+            categ_dict[elem[0].strip()] = elem[1].strip()
+    return categ_dict
 
-def check(dic):
-  sum = 0
-  for element in dic.keys():
-    sum += dic[element]
-  print(sum)
 
 def plt_commonFailure(indices,values,name,xlable_n,y_label_n,h_title,save_f,h_type=None):
-    """! Utility to plot histograms
+    """! Utility to plot bar plot for common failures
         @param indices,values,name,xlable_n,y_label_n,h_title,save_f
         @param h_type: histogram type h for horizontal otherwise is standard
         @return None
@@ -55,6 +62,10 @@ def plt_commonFailure(indices,values,name,xlable_n,y_label_n,h_title,save_f,h_ty
     plt.savefig(save_f+name+".png")
 
 def plt_residual(data,save_f,name):
+    """! Utility to plot residuals bar plot
+        @param data,save_f,name
+        @return None
+    """
     plt.bar(data.keys(), data.values(), color='salmon', edgecolor='black', width=0.4)
     simmetric_Value = max([abs(x) for x in data.values()])+0.1
     plt.ylim(-simmetric_Value, simmetric_Value)
@@ -63,20 +74,25 @@ def plt_residual(data,save_f,name):
     plt.ylabel('Residuals')
     plt.savefig(save_f+name+".png",format="png", dpi=300)
 
-
-
-
 def createPlot(labels,valori,save_f,name):
-  plt.figure(figsize=(27, 19))
-  plt.barh(labels, valori, color='salmon')
-  plt.xlabel('Distribution')
-  plt.ylabel('Category')
-  plt.title('Category distribution')
-  plt.savefig(save_f+name+".png",format="png", dpi=300)
+    """! Utility create plots
+        @param labels,valori,save_f,name
+        @return None
+    """
+    plt.figure(figsize=(27, 19))
+    plt.barh(labels, valori, color='salmon')
+    plt.xlabel('Distribution')
+    plt.ylabel('Category')
+    plt.title('Category distribution')
+    plt.savefig(save_f+name+".png",format="png", dpi=300)
 
 
 
 def plt_categ_distribution(test_in_path,cat_legend_path,save_f,name):
+    """! Utility to plot category distribution bar plot
+        @param data,save_f,name
+        @return None
+    """
     df = pd.read_excel(test_in_path)
     categ_dic = createCategDict(cat_legend_path)
     labels = list(categ_dic.values())

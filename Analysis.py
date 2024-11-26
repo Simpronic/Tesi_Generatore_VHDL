@@ -221,6 +221,10 @@ def commonFailure():
     plt_commonFailure(indexes[0:19],values[0:19],"Common_failures","Row","Number of failure","Common Failuers",config.get("OUTPUTS","img_folder"),None)
 
 def commonFailureCateg():
+    """! Driver for plotting common failures
+        @param None
+        @return None
+    """
     print("Insert th path to common failure csv file")
     fp = input()
     common_failure_dict,cat_dict = evaluation_master.commonFailureAnalysis_category(fp)
@@ -228,6 +232,10 @@ def commonFailureCateg():
 
 
 def modelEvalDiffCateg_plot():
+    """! Driver for plotting model comparison on difficoult category
+        @param None
+        @return None
+    """
     print("Insert folder were Analysis files are located")
     f_p = input()
     files =  [file for file in os.listdir(f_p) if file.endswith(".csv")]
@@ -246,12 +254,18 @@ def modelEvalDiffCateg_plot():
     plt_modelEvaluationDifficoultCategory(np.array([str(value) for value in category_names.values()]),values,names,config.get("OUTPUTS","img_folder"))
 
 def res_plot():
-    #TO MODIFY...
-    
+    """! Driver for plotting residuals between avg metrics and HE
+        @param None
+        @return None
+    """
     arr = {"CodeGen":-0.09 , "CodeT5_220": 0.02, "CodeT5_770": 0.05, "CodeGPT": -0.12,"ClaudeSonnet": 0.20}
     plt_residual(arr,config.get("OUTPUTS","img_folder"),"ModelsResidualPlot")
 
 def cat_plot():
+    """! Driver for plotting category distribution
+        @param None
+        @return None
+    """
     plt_categ_distribution(config.get("DEFAULT","category_path"),config.get("DEFAULT","category_legend"),config.get("OUTPUTS","img_folder"),"CategoryDistrPlot")
 
 def default():
@@ -263,6 +277,10 @@ def TestSetDistribution():
     evaluation_master.category_distribution(name)
 
 def ModelEvalDiffiCateg():
+    """! Calculate the performance of the models on top 5 difficoult categories
+        @param None
+        @return None
+    """
     diff_dic = evaluation_master.calculateCategoriesDifficulty()
     top_5_diff_categ = dict(sorted(diff_dic.items(), key=lambda item: item[1],reverse=True))
     top_5_diff_categ = dict(list(top_5_diff_categ.items())[:5])

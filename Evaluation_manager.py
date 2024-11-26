@@ -40,9 +40,17 @@ class Evaluation_master:
             self.config_p.read('config.cfg')
 
         def __countTokens(self,phrase):
+            """! Counts how may token there are in a given phrase
+                @param phrase
+                @return num_tokens
+            """
             return len(nltk.word_tokenize(phrase))
         
         def __calculateCategoryDifficulty(self,categ_numb):
+            """! Calculates the category difficulty
+                @param categ_numb: category number
+                @return categ_diff: difficulty score
+            """
             utility_df = self.excel_to_analyze
             test_in_categ_file = pd.read_excel(self.config_p.get("DEFAULT","category_path"))
             utility_df["Category"] = test_in_categ_file["Category"]
@@ -233,6 +241,10 @@ class Evaluation_master:
             return max_elab_time_ms,row_categ
 
         def calculateCategoriesDifficulty(self):
+            """! Calculates the difficulty of each category 
+                @param None
+                @return category_diff: dictionary with category difficulties  cat_numb:difficulty
+            """
             categories = self.__createCategDict(self.config_p.get("DEFAULT","category_legend")).keys()
             category_diff = dict()
             for category in categories:
@@ -420,6 +432,10 @@ class Evaluation_master:
             df.to_excel(self.config_p.get("OUTPUTS","output_folder")+self.excel_name,index=False)
 
         def category_distribution(self,name):
+            """! Calculates the category distribution
+                @param name: file name
+                @return None
+            """
             input_prompt = []
             with open(self.config_p.get("DEFAULT","data_in"), "r") as file:
                 # Leggi il file riga per riga
