@@ -82,9 +82,9 @@ class Evaluation_master:
                 @return  [lower_bound,upper_bound]
             """
             if(len(data) < 30):
-                ub,lb= self.__confidence_interval_t_student(data)
+                lb,ub= self.__confidence_interval_t_student(data)
             else:
-                ub,lb = self.__confidence_interval_normal(data)
+                lb,ub = self.__confidence_interval_normal(data)
             return f"[{lb},{ub}]"
             
         def __time_to_ms(self,time):
@@ -389,6 +389,7 @@ class Evaluation_master:
                 statistics_dict.setdefault(metric,[]).append(self.excel_to_analyze[metric].mean())
                 statistics_dict.setdefault(metric,[]).append(self.excel_to_analyze[metric].std())
                 statistics_dict.setdefault(metric,[]).append(self.excel_to_analyze[metric].median())
+                statistics_dict.setdefault(metric,[]).append(self.__confidence_interval_calculation(self.excel_to_analyze[metric]))
             return statistics_dict
 
         def createExcel(self):
@@ -428,6 +429,7 @@ class Evaluation_master:
             df['CRYSTALB_M'] = self.m_m.calc_crystalBLEU(re_compute_ngrams=False)
             df['SACREB_M'] = self.m_m.calc_sacreBLEU()
             df['ROUGE_M'] = self.m_m.calc_rouge(self.model_output_path,self.refs_path)
+            df['SBERT_M'] = self.m_m.calc_SBERT()
             df['HUMAN_E'] = df['EM_M']
             df.to_excel(self.config_p.get("OUTPUTS","output_folder")+self.excel_name,index=False)
 

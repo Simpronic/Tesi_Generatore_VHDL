@@ -127,6 +127,7 @@ def metrics_statistics():
        print(f"mean: {metric_dict[key][0]}")
        print(f"std: {metric_dict[key][1]}")
        print(f"median: {metric_dict[key][2]} \n")
+       print(f"C.I 95%: {metric_dict[key][3]}")
        
 
 def model_acc():

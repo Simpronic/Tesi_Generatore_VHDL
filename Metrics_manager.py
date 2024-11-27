@@ -13,6 +13,8 @@ from typing import List, Tuple
 import pylcs
 import sacrebleu
 import ast
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
 class Metrics_manager:
     """! The Evaluation_master class.
@@ -235,4 +237,15 @@ class Metrics_manager:
             [scores_f.append(str(line[metrics_name[i]]["f"])) for line in res]	
 
             return scores_f
+        
+    def calc_SBERT(self):
+        model = SentenceTransformer('all-MiniLM-L6-v2')
+        scores = []
+        for i in range(0,len(self.hyps)):
+            scores.append(self.__calculateSBERT(model,self.hyps[i],self.refs[i]))
+        return scores
 
+    def __calculateSBERT(self,model,hyp,ref):
+        generated_embedding = model.encode(hyp)
+        reference_embedding = model.encode(ref)
+        return cosine_similarity([generated_embedding], [reference_embedding])[0][0]
