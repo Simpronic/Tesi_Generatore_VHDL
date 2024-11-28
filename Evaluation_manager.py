@@ -430,6 +430,7 @@ class Evaluation_master:
             df['SACREB_M'] = self.m_m.calc_sacreBLEU()
             df['ROUGE_M'] = self.m_m.calc_rouge(self.model_output_path,self.refs_path)
             df['SBERT_M'] = self.m_m.calc_SBERT()
+            df['WMD_M'] = self.m_m.calc_wmd()
             df['HUMAN_E'] = df['EM_M']
             df.to_excel(self.config_p.get("OUTPUTS","output_folder")+self.excel_name,index=False)
 

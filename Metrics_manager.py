@@ -16,6 +16,11 @@ import ast
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
+from nltk.corpus import stopwords
+from nltk import download
+import gensim.downloader as api
+
+
 class Metrics_manager:
     """! The Evaluation_master class.
     Class that is responsible for metrics calculations
@@ -249,3 +254,21 @@ class Metrics_manager:
         generated_embedding = model.encode(hyp)
         reference_embedding = model.encode(ref)
         return cosine_similarity([generated_embedding], [reference_embedding])[0][0]
+
+   
+    def calc_wmd(self):
+        download('stopwords')  
+        stop_words = stopwords.words('english')
+        model = api.load('word2vec-google-news-300')
+        distances = []
+        scores = []
+        for i in range(0,len(self.hyps)):
+            hyp = self.hyps[i]
+            ref = self.refs[i]
+            distances.append(model.wmdistance(ref, hyp))     
+        for dist in distances:
+            if(np.isinf(dist)):
+                scores.append(0)
+            else:
+                scores.append(1-abs(dist))
+        return scores

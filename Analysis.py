@@ -259,7 +259,8 @@ def res_plot():
         @param None
         @return None
     """
-    arr = {"CodeGen":-0.09 , "CodeT5_220": 0.02, "CodeT5_770": 0.05, "CodeGPT": -0.12,"ClaudeSonnet": 0.20}
+    #arr = {"CodeGen":-0.09 , "CodeT5_220": 0.02, "CodeT5_770": 0.05, "CodeGPT": -0.12,"ClaudeSonnet": 0.20}
+    arr = {"CodeGen":-0.09 , "CodeT5_220": 0.02, "CodeT5_770": 0.05, "CodeGPT": -0.12}
     plt_residual(arr,config.get("OUTPUTS","img_folder"),"ModelsResidualPlot")
 
 def cat_plot():
