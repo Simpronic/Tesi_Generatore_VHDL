@@ -24,7 +24,7 @@ import configparser
 import os
 import csv
 import matplotlib.pyplot as plt
-from utility_plots import plt_residual,plt_categ_distribution,plt_commonFailure,plt_modelEvaluationDifficoultCategory,createCategDict
+from utility_plots import plt_residual,plt_categ_distribution,plt_commonFailure,plt_modelEvaluationDifficoultCategory,createCategDict,plot_category_difficulty
 import glob
 
 evaluation_master = Evaluation_master(None,None,None,None)
@@ -279,11 +279,12 @@ def TestSetDistribution():
     evaluation_master.category_distribution(name)
 
 def ModelEvalDiffiCateg():
-    """! Calculate the performance of the models on top 5 difficoult categories
+    """! Calculate the performance of the models on top 5 difficult categories
         @param None
         @return None
     """
     diff_dic = evaluation_master.calculateCategoriesDifficulty()
+    #plot_category_difficulty(diff_dic,config.get("DEFAULT","category_legend"),config.get("OUTPUTS","img_folder"),"category_difficulty")
     top_5_diff_categ = dict(sorted(diff_dic.items(), key=lambda item: item[1],reverse=True))
     top_5_diff_categ = dict(list(top_5_diff_categ.items())[:5])
     score_dict,_ = evaluation_master.categoryAnalysis()

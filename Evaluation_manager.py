@@ -242,6 +242,7 @@ class Evaluation_master:
 
         def calculateCategoriesDifficulty(self):
             """! Calculates the difficulty of each category 
+                @Note: You neet to load at leas one model
                 @param None
                 @return category_diff: dictionary with category difficulties  cat_numb:difficulty
             """
