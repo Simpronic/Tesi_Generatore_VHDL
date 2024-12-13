@@ -283,8 +283,10 @@ def ModelEvalDiffiCateg():
         @param None
         @return None
     """
+    print("Insert file path")
+    gdf = createglobaldf()
     diff_dic = evaluation_master.calculateCategoriesDifficulty()
-    #plot_category_difficulty(diff_dic,config.get("DEFAULT","category_legend"),config.get("OUTPUTS","img_folder"),"category_difficulty")
+    plot_category_difficulty(diff_dic,config.get("DEFAULT","category_legend"),config.get("OUTPUTS","img_folder"),"category_difficulty")
     top_5_diff_categ = dict(sorted(diff_dic.items(), key=lambda item: item[1],reverse=True))
     top_5_diff_categ = dict(list(top_5_diff_categ.items())[:5])
     score_dict,_ = evaluation_master.categoryAnalysis()
@@ -298,6 +300,11 @@ def ModelEvalDiffiCateg():
         writer.writerow(['Category_number', 'accuracy'])
         for chiave, valore in model_acc_for_diff_categ.items():
             writer.writerow([chiave, valore])
+
+def CategTokenPlt():
+    print("Insert folder path")
+    f_p = input()
+    gdf = createglobaldf(f_p)
 
 def statisticsMenu():
     print("Which statistics would you like to perform ? \n\n")
@@ -324,6 +331,7 @@ def plotMenu():
     print("1. Resisual plot (metric_avg - accuracy_he)")
     print("2. Category distribution")
     print("3. Models evaluation on difficult categories")
+    print("4. Category Token Plot")
     choice = int(input())
     switch_plot.get(choice,default)()
 
@@ -358,7 +366,8 @@ switch_plot = {
     0: menu,
     1: res_plot,
     2: cat_plot,
-    3: modelEvalDiffCateg_plot
+    3: modelEvalDiffCateg_plot,
+    4: CategTokenPlt
 }
 
 
