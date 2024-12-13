@@ -39,6 +39,21 @@ class Evaluation_master:
             self.config_p = configparser.ConfigParser()
             self.config_p.read('config.cfg')
 
+        def CategDifficultyByToken(self,gdf):
+            cat_dict = self.__createCategDict(self.config_p.get("DEFAULT","category_legend"))
+            cat_distr = self.__getCategDistr(self.config_p.get("DEFAULT","category_path"))
+            categ_score = dict()
+            for categ in cat_distr:
+                score = 0
+                e_numbers = 0
+                for i in range(0,len(cat_distr)):
+                    if(cat_distr[i] == int(categ)):
+                        e_numbers += 1 
+                        score += self.__countTokens(gdf["HYPS"][i])
+                score = score/e_numbers
+                categ_score[categ] = score           
+            return categ_score
+        
         def __countTokens(self,phrase):
             """! Counts how may token there are in a given phrase
                 @param phrase

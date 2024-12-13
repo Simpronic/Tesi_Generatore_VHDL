@@ -107,8 +107,9 @@ def plt_categ_distribution(test_in_path,cat_legend_path,save_f,name):
     
 def plot_category_difficulty(diff_dic,cat_legend_path,save_f,name):
     categ_dic = createCategDict(cat_legend_path)
-    labels = list(categ_dic.values())
+    labels = [] 
+    for item in diff_dic.keys():
+        labels.append(categ_dic[str(item)])
     values = diff_dic.values()
     histo_dict = dict()
-
     createPlot(labels,values,save_f,name)

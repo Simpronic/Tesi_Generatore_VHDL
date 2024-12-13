@@ -283,13 +283,19 @@ def ModelEvalDiffiCateg():
         @param None
         @return None
     """
-    print("Insert file path")
-    gdf = createglobaldf()
     diff_dic = evaluation_master.calculateCategoriesDifficulty()
-    plot_category_difficulty(diff_dic,config.get("DEFAULT","category_legend"),config.get("OUTPUTS","img_folder"),"category_difficulty")
+    #plot_category_difficulty(diff_dic,config.get("DEFAULT","category_legend"),config.get("OUTPUTS","img_folder"),"category_difficulty")
     top_5_diff_categ = dict(sorted(diff_dic.items(), key=lambda item: item[1],reverse=True))
     top_5_diff_categ = dict(list(top_5_diff_categ.items())[:5])
     score_dict,_ = evaluation_master.categoryAnalysis()
+    common_key = sorted(set(top_5_diff_categ.keys()) & set(score_dict.keys()))
+    model_acc_for_diff_categ = dict()
+    for key in common_key:
+        model_acc_for_diff_categ[key] = score_dict[key]
+    with open(config.get("OUTPUTS","csv_folder")+"DifficultCategory_"+current_excel_analysis.split(".")[0]+".csv", mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Category_number', 'accuracy'])
+
     common_key = sorted(set(top_5_diff_categ.keys()) & set(score_dict.keys()))
     model_acc_for_diff_categ = dict()
     
@@ -301,10 +307,65 @@ def ModelEvalDiffiCateg():
         for chiave, valore in model_acc_for_diff_categ.items():
             writer.writerow([chiave, valore])
 
+def correlationForCategoryToken():
+    print("Insert folder path")
+    f_p = input()
+    gdf = createglobaldf(f_p)
+    categ_dict = evaluation_master.CategDifficultyByToken(gdf)
+    hard_categ = [key for key, value in categ_dict.items() if value >= 40]
+    medium_categ = [key for key, value in categ_dict.items() if value < 40 and value >= 20]
+    easy_categ = [key for key, value in categ_dict.items() if value < 20]
+    
+    easy_categ_entryes = gdf[gdf['Category'].isin(easy_categ)]
+    medium_categ_entryes = gdf[gdf['Category'].isin(medium_categ)]
+    hard_categ_entryes = gdf[gdf['Category'].isin(hard_categ)]
+    metrics = config.get("STATISTICS","metrics_name").split(",")
+    for metric in metrics:
+        print(f"Correlation for easy Categ entryes metric {metric}")
+        kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value =evaluation_master.globalCorrelation(easy_categ_entryes,metric)
+        print("Spearman Correlation:", spearman_corr)
+        print("Spearman P-value:", spearman_p_value)
+
+        print("Kendall Correlation:", kendall_corr)
+        print("Kendall P-value:", kendall_p_value)
+
+        print("Pearson Correlation:", pearson_corr)
+        print("Pearson P-value:", pearson_p_value)
+
+        print("\n\n")
+        print(f"Correlation for medium Categ entryes metric {metric}")
+        kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value =evaluation_master.globalCorrelation(medium_categ_entryes,metric)
+        print("Spearman Correlation:", spearman_corr)
+        print("Spearman P-value:", spearman_p_value)
+
+        print("Kendall Correlation:", kendall_corr)
+        print("Kendall P-value:", kendall_p_value)
+
+        print("Pearson Correlation:", pearson_corr)
+        print("Pearson P-value:", pearson_p_value)
+
+        print("\n\n")
+        print(f"Correlation for hard Categ entryes metric {metric}")
+        kendall_corr,kendall_p_value,spearman_corr,spearman_p_value,pearson_corr, pearson_p_value =evaluation_master.globalCorrelation(hard_categ_entryes,metric)
+        print("Spearman Correlation:", spearman_corr)
+        print("Spearman P-value:", spearman_p_value)
+
+        print("Kendall Correlation:", kendall_corr)
+        print("Kendall P-value:", kendall_p_value)
+
+        print("Pearson Correlation:", pearson_corr)
+        print("Pearson P-value:", pearson_p_value)
+
+        print("\n\n")
+    
+
 def CategTokenPlt():
     print("Insert folder path")
     f_p = input()
     gdf = createglobaldf(f_p)
+    categ_dict = evaluation_master.CategDifficultyByToken(gdf)
+    plot_category_difficulty(categ_dict,config.get("DEFAULT","category_legend"),config.get("OUTPUTS","img_folder"),"categorydifficultyByToken")
+    print(categ_dict)
 
 def statisticsMenu():
     print("Which statistics would you like to perform ? \n\n")
@@ -321,6 +382,7 @@ def statisticsMenu():
     print("10. Common Failure analysis")
     print("11. Common Failure analysis (Category)")
     print("12. Model evaluation on difficult category")
+    print("13. Correlation on category")
     print("Other. Exit")
     choice = int(input())
     switch_statistics.get(choice,default)()
@@ -359,7 +421,8 @@ switch_statistics = {
     9: globalCorrelation,
     10: commonFailure,
     11: commonFailureCateg,
-    12: ModelEvalDiffiCateg
+    12: ModelEvalDiffiCateg,
+    13: correlationForCategoryToken
 }
 
 switch_plot = {
